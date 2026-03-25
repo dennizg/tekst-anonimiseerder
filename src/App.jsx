@@ -9,8 +9,8 @@ const LegalModal = lazy(() => import('./components/LegalModal'));
 const BackgroundParticles = lazy(() => import('./components/BackgroundParticles'));
 
 import { detectPII, detectCategory } from './utils/detector';
-import { generateReplacement, resetGenerator } from './utils/generator';
-import { exportMappingFile, applyMappings, copyToClipboard, readTextFile } from './utils/fileHandler';
+import { generateReplacement, resetGenerator, registerUsedReplacements } from './utils/generator';
+import { exportMappingFile, applyMappings, copyToClipboard, readTextFile, importMappingFile } from './utils/fileHandler';
 import './index.css';
 
 export default function App() {
@@ -21,6 +21,9 @@ export default function App() {
   const [copied, setCopied] = useState(false);
   const [notification, setNotification] = useState(null);
   const [legalModalType, setLegalModalType] = useState(null);
+  
+  const [baseMappings, setBaseMappings] = useState([]);
+  const [baseFileName, setBaseFileName] = useState(null);
   
   const [sliderStyle, setSliderStyle] = useState({ left: 0, width: 0 });
   const tabsRef = useRef(null);
@@ -51,21 +54,34 @@ export default function App() {
 
     // Reset de generator voor een schone set vervangers
     resetGenerator();
+    
+    // Registreer de al bekende vervangers zodat ze niet opnieuw gepickt worden
+    if (baseMappings.length > 0) {
+      registerUsedReplacements(baseMappings);
+    }
 
     // Detecteer PII
     const detected = detectPII(text);
 
-    // Genereer vervangingen
-    const newMappings = detected.map(item => ({
-      original: item.original,
-      category: item.category,
-      label: item.label,
-      replacement: generateReplacement(item.original, item.category),
-    }));
+    // Filter nieuwe omzettingen die nog niet inzitten, en bewaar de baseMappings
+    const newMappings = [...baseMappings];
+
+    detected.forEach(item => {
+      // Kijk of we dit woord/zinsdeel al kennen uit het base bestand
+      const existing = newMappings.find(m => m.original === item.original);
+      if (!existing) {
+        newMappings.push({
+          original: item.original,
+          category: item.category,
+          label: item.label,
+          replacement: generateReplacement(item.original, item.category),
+        });
+      }
+    });
 
     setMappings(newMappings);
     setShowResults(true);
-  }, []);
+  }, [baseMappings]);
 
   /**
    * Verwerkt een gesleept bestand.
@@ -78,6 +94,24 @@ export default function App() {
       showNotification('Fout bij het lezen van het bestand.', 'error');
     }
   }, [handleTextInput]);
+
+  /**
+   * Laadt een bestaand .anon sleutelbestand als basis
+   */
+  const handleBaseFileLoad = useCallback(async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    try {
+      const importedMappings = await importMappingFile(file);
+      setBaseMappings(importedMappings);
+      setBaseFileName(file.name);
+      showNotification(`${importedMappings.length} items geladen uit ${file.name}.`, 'success');
+    } catch (error) {
+      showNotification(error.message, 'error');
+    }
+    // reset input zodat je hetzelfde bestand nogmaals kunt kiezen als je wilt
+    e.target.value = '';
+  }, []);
 
   /**
    * Verwijdert een mapping uit de tabel.
@@ -139,15 +173,17 @@ export default function App() {
     // Pas alle vervangingen toe
     const anonymizedText = applyMappings(originalText, mappings, false);
 
+    // Download het .anon bestand EERST (synchroon in het click event)
+    // Dit voorkomt dat de browser de download blokkeert omdat de 'user gesture' 
+    // verloren gaat tijdens het wachten op het async klembord
+    exportMappingFile(mappings);
+
     // Kopieer naar klembord
     const success = await copyToClipboard(anonymizedText);
     if (success) {
       setCopied(true);
       setTimeout(() => setCopied(false), 4000);
     }
-
-    // Download het .anon bestand (nu met de nieuwe naamgeving)
-    exportMappingFile(mappings);
 
     showNotification(
       'Tekst gekopieerd naar klembord en sleutelbestand gedownload!',
@@ -171,6 +207,8 @@ export default function App() {
     setMappings([]);
     setShowResults(false);
     setCopied(false);
+    setBaseMappings([]);
+    setBaseFileName(null);
     resetGenerator();
   }
 
@@ -285,6 +323,27 @@ export default function App() {
                   <p className="glass-panel__subtitle">
                     Plak je tekst hieronder of sleep een <strong>.txt</strong> bestand in dit veld
                   </p>
+                  
+                  {/* Optioneel: Basis sleutelbestand uploaden */}
+                  <div className="anonymizer__base-upload" style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '1rem', background: 'rgba(255, 255, 255, 0.05)', padding: '0.75rem 1rem', borderRadius: '8px' }}>
+                    <span style={{ fontSize: '0.9rem', color: 'var(--color-text-dim)' }}>Optioneel:</span>
+                    <label className="btn btn--outline btn--small" style={{ margin: 0 }}>
+                      Laad vorig sleutelbestand (.anon)
+                      <input type="file" accept=".anon" style={{ display: 'none' }} onChange={handleBaseFileLoad} />
+                    </label>
+                    {baseFileName && (
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem' }}>
+                        <span>✅ {baseFileName} ({baseMappings.length} items)</span>
+                        <button 
+                          className="btn btn--ghost btn--small" 
+                          style={{ padding: '0.2rem 0.5rem', color: 'var(--color-error)' }}
+                          onClick={() => { setBaseFileName(null); setBaseMappings([]); }}
+                          title="Verwijder basisbestand"
+                        >✕</button>
+                      </div>
+                    )}
+                  </div>
+
                   <DropZone
                     onTextReceived={handleTextInput}
                     onFileReceived={handleFileInput}

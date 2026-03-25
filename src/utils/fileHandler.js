@@ -119,10 +119,12 @@ export function applyMappings(text, mappings, reverse = false) {
     const searchTerm = reverse ? mapping.replacement : mapping.original;
     const replaceTerm = reverse ? mapping.original : mapping.replacement;
     
-    // Vervang alle voorkomens
-    while (result.includes(searchTerm)) {
-      result = result.replace(searchTerm, replaceTerm);
-    }
+    if (!searchTerm) continue;
+
+    // Vervang alle voorkomens veilig zonder infinite loops.
+    // We gebruiken split() en join() in plaats van een while-loop met replace()
+    // omdat een while-loop vastloopt als de searchTerm onderdeel is van de replaceTerm.
+    result = result.split(searchTerm).join(replaceTerm);
   }
   
   return result;

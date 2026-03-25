@@ -32,7 +32,8 @@ export default function InfoTab({ onOpenLegalModal }) {
             <div className="info-tab__step-content">
               <h3>Tekst invoeren</h3>
               <p>Plak je tekst in het invoerveld of sleep een <code>.txt</code> bestand erin. 
-              De tekst wordt direct geanalyseerd.</p>
+              De tekst wordt direct geanalyseerd. <br/>
+              <em><strong>Tip:</strong> Upload vóór het plakken een bestaand <code>.anon</code> sleutelbestand om eerdere pseudoniemen opnieuw te gebruiken (ideaal voor periodieke notulen).</em></p>
             </div>
           </div>
           <div className="info-tab__step">
@@ -90,6 +91,9 @@ export default function InfoTab({ onOpenLegalModal }) {
               bel <mark className="example-mark example-mark--telefoon">06-98712345</mark>.
             </p>
           </div>
+        </div>
+        <div className="info-tab__text" style={{ marginTop: '1.5rem', fontSize: '0.95rem', color: 'var(--color-text-light)', backgroundColor: 'var(--color-bg-alt)', padding: '1rem', borderRadius: '8px', borderLeft: '4px solid var(--color-accent)' }}>
+          <strong>💡 Tip voor terugkerende rapportages:</strong> Heb je volgende maand een nieuw verslag waar <em>Jan de Vries</em> weer in voorkomt? Laad dan vooraf je eerder bewaarde sleutelbestand (.anon) in. In de nieuwe geanonimiseerde tekst zal hij dan automatisch wéér <em>Sofie van Houten</em> heten!
         </div>
       </section>
 

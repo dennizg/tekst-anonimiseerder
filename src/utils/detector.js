@@ -10,40 +10,38 @@ import { DUTCH_PLACES, WORLD_CITIES, COUNTRIES } from './dictionaries/places';
 
 // Woorden die NIET als naam herkend moeten worden (veelvoorkomende zelfstandige naamwoorden aan begin van zinnen)
 const COMMON_WORDS = new Set([
-  'de', 'het', 'een', 'dit', 'dat', 'deze', 'die', 'wat', 'wie', 'waar',
-  'wanneer', 'waarom', 'hoe', 'welke', 'alle', 'veel', 'meer', 'minder',
-  'ook', 'nog', 'wel', 'niet', 'geen', 'maar', 'want', 'omdat', 'als',
-  'dan', 'toen', 'daar', 'hier', 'nu', 'reeds', 'echter', 'dus', 'toch',
-  'voor', 'van', 'met', 'over', 'door', 'naar', 'bij', 'onder', 'boven',
-  'tussen', 'zonder', 'tegen', 'tot', 'uit', 'op', 'in', 'aan', 'om',
-  'na', 'per', 'ter', 'sinds', 'tijdens', 'volgens', 'ondanks', 'behalve',
-  'zij', 'hij', 'wij', 'ik', 'jij', 'je', 'we', 'ze', 'men', 'hun',
-  'haar', 'hem', 'ons', 'mij', 'zich', 'elkaar', 'zelf', 'iets', 'niets',
-  'iemand', 'niemand', 'iedereen', 'alles', 'elke', 'elk', 'ander',
-  'andere', 'beiden', 'heel', 'erg', 'zeer', 'zo', 'te', 'vrij',
-  'best', 'juist', 'precies', 'slechts', 'alleen', 'enkel', 'pas',
-  'bijna', 'haast', 'ongeveer', 'circa', 'ruim', 'minstens', 'hoogstens',
-  'bovendien', 'daarnaast', 'verder', 'vervolgens', 'daarna', 'ten slotte',
-  'kortom', 'samengevat', 'immers', 'namelijk', 'bijvoorbeeld', 'oftewel',
-  'ofwel', 'enerzijds', 'anderzijds', 'hoewel', 'alhoewel', 'terwijl',
-  'indien', 'mits', 'tenzij', 'zodra', 'voordat', 'nadat', 'totdat',
-  'sinds', 'sedert', 'opdat', 'zodat',
-  // Maanden en dagen (beginnen ook vaak met hoofdletter)
-  'januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli',
-  'augustus', 'september', 'oktober', 'november', 'december',
-  'maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag', 'zondag',
-  // Veelvoorkomende woorden die aan het begin van een zin staan
-  'daarom', 'daardoor', 'vandaar', 'vandaag', 'gisteren', 'morgen',
-  'overmorgen', 'eergisteren', 'straks', 'later', 'eerder', 'vroeger',
-  'tegenwoordig', 'momenteel', 'binnenkort', 'uiteindelijk', 'tenslotte',
-  'allereerst', 'vervolgens', 'daarmee', 'hiermee', 'waarschijnlijk',
-  'misschien', 'wellicht', 'mogelijk', 'onmogelijk', 'natuurlijk',
-  'uiteraard', 'vanzelfsprekend', 'helaas', 'gelukkig', 'hopelijk',
-  'kennelijk', 'blijkbaar', 'schijnbaar', 'ogenschijnlijk', 'inderdaad',
-  'absoluut', 'zeker', 'beslist', 'ongetwijfeld', 'vast',
-  'nooit', 'altijd', 'vaak', 'soms', 'zelden', 'regelmatig',
-  'gewoonlijk', 'doorgaans', 'steeds', 'telkens', 'herhaaldelijk',
-  'af', 'toe', 'inmiddels', 'intussen', 'ondertussen', 'gaandeweg',
+  '// Maanden en dagen (beginnen ook vaak met hoofdletter)  januari', '// Veelvoorkomende woorden die aan het begin van een zin staan  daarom', 'aan', 'absoluut', 'ad', 'af', 'al', 'alhoewel',
+  'alle', 'alleen', 'allereerst', 'alles', 'als', 'altijd', 'ander', 'andere',
+  'anderzijds', 'april', 'augustus', 'behalve', 'beiden', 'ben', 'bent', 'beslist',
+  'best', 'bij', 'bijna', 'bijvoorbeeld', 'binnenkort', 'blijkbaar', 'boven', 'bovendien',
+  'boy', 'circa', 'daar', 'daardoor', 'daarmee', 'daarna', 'daarnaast', 'dan',
+  'dat', 'de', 'december', 'deze', 'die', 'dik', 'dinsdag', 'dit',
+  'donderdag', 'door', 'doorgaans', 'dus', 'echt', 'echter', 'een', 'eerder',
+  'eergisteren', 'elk', 'elkaar', 'elke', 'enerzijds', 'enkel', 'erg', 'februari',
+  'fout', 'gaandeweg', 'geen', 'gelukkig', 'gewoonlijk', 'gisteren', 'goed', 'haar',
+  'haast', 'hadden', 'heb', 'hebt', 'heeft', 'heel', 'helaas', 'hem',
+  'herhaaldelijk', 'het', 'hier', 'hiermee', 'hij', 'hoe', 'hoewel', 'hoogstens',
+  'hopelijk', 'hun', 'iedereen', 'iemand', 'iets', 'ik', 'immers', 'in',
+  'inderdaad', 'indien', 'inmiddels', 'intussen', 'is', 'je', 'jij', 'job',
+  'juist', 'juli', 'jullie', 'juni', 'kan', 'kennelijk', 'kortom', 'kunnen',
+  'later', 'lente', 'maandag', 'maar', 'maart', 'mag', 'meer', 'mei',
+  'meis', 'men', 'mens', 'met', 'mij', 'mijn', 'minder', 'minstens',
+  'misschien', 'mits', 'moet', 'moeten', 'mogelijk', 'mogen', 'momenteel', 'morgen',
+  'na', 'naar', 'nadat', 'namelijk', 'natuurlijk', 'niemand', 'niet', 'niets',
+  'nog', 'nooit', 'november', 'nu', 'oftewel', 'ofwel', 'ogenschijnlijk', 'oktober',
+  'om', 'omdat', 'ondanks', 'onder', 'ondertussen', 'ongetwijfeld', 'ongeveer', 'onmogelijk',
+  'ons', 'onwaar', 'onze', 'ook', 'op', 'opdat', 'over', 'overmorgen',
+  'pas', 'peer', 'per', 'precies', 'reeds', 'regelmatig', 'ruim', 'samengevat',
+  'schijnbaar', 'sedert', 'september', 'sinds', 'slechts', 'soms', 'steeds', 'straks',
+  'te', 'tegen', 'tegenwoordig', 'telkens', 'ten slotte', 'tenslotte', 'tenzij', 'ter',
+  'terwijl', 'tijdens', 'toch', 'toe', 'toen', 'ton', 'tot', 'totdat',
+  'tussen', 'uit', 'uiteindelijk', 'uiteraard', 'uw', 'vaak', 'van', 'vandaag',
+  'vandaar', 'vanzelfsprekend', 'vast', 'veel', 'verder', 'vervolgens', 'volgens', 'voor',
+  'voordat', 'vrij', 'vrijdag', 'vroeger', 'waar', 'waarom', 'waarschijnlijk', 'wanneer',
+  'want', 'waren', 'was', 'wat', 'we', 'wel', 'welke', 'wellicht',
+  'werd', 'werden', 'wie', 'wij', 'wil', 'willen', 'wilt', 'woensdag',
+  'zal', 'zaterdag', 'ze', 'zeer', 'zeker', 'zelden', 'zelf', 'zich',
+  'zij', 'zijn', 'zo', 'zodat', 'zodra', 'zondag', 'zonder', 'zullen'
 ]);
 
 // Categorieën en hun regex-patronen
@@ -51,13 +49,14 @@ const PATTERNS = [
   {
     category: 'email',
     label: 'E-mailadres',
-    regex: /\b[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}\b/g,
+    regex: /\b[A-Za-z0-9._%+\-]+(?:@|\s*[\(\[\{]at[\)\]\}]\s*|\s+at\s+|\s+apestaartje\s+)[A-Za-z0-9.\-]+\.[A-Za-z]{2,}\b/gi,
     priority: 10,
   },
   {
     category: 'url',
     label: 'URL',
-    regex: /https?:\/\/[^\s<>"{}|\\^`\[\]]+/g,
+    // Vangt http(s), ftp(s), sftp, ws(s) en meer, www., én naakte domeinen met specifieke TLD's (voorkomt false positives) inclusief eventuele paden
+    regex: /\b(?:(?:https?|ftps?|sftp|wss?|smb|ssh|file|git|svn):\/\/|www\.)[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}(?:\/[a-zA-Z0-9\-._~:\/?#\[\]@!$&'()*+,;=]*)?|\b[a-zA-Z0-9.\-]+\.(?:com|org|net|edu|gov|nl|be|de|fr|uk|es|it|eu|io|co|info|biz|me|tv|xyz|app|online|site|nu|ru|vlaanderen|amsterdam|frl)\b(?:\/[a-zA-Z0-9\-._~:\/?#\[\]@!$&'()*+,;=]*)?/gi,
     priority: 10,
   },
   {
@@ -69,36 +68,64 @@ const PATTERNS = [
   {
     category: 'telefoon',
     label: 'Telefoonnummer',
-    // Nederlandse formaten: 06-12345678, 020-1234567, +31612345678, etc.
-    regex: /(?:\+31[\s\-]?(?:\(0\))?[\s\-]?\d[\s\-]?\d{2,}[\s\-]?\d{2,}[\s\-]?\d{0,4}|\b0\d[\s\-]?\d{2,}[\s\-]?\d{2,}[\s\-]?\d{0,4})\b/g,
-    priority: 9,
+    // Vangt internationale (+X, 00X) en nationale (0X) nummers incl haakjes (0) en afwisselende spaties/streepjes
+    regex: /(?:(?:\+|00)[1-9]\d{0,2}[\s\-\.]?(?:\(0\))?|(?:\b|\()0\d{1,4}(?:\))?)[\s\-\.]?(?:\d[\s\-\.]?){5,12}\d\b/g,
+    priority: 8,
   },
   {
     category: 'postcode',
     label: 'Postcode',
-    regex: /\b\d{4}\s?[A-Z]{2}\b/g,
+    regex: /\b\d{4}\s?[A-Za-z]{2}\b/g,
     priority: 8,
+  },
+  {
+    category: 'adres',
+    label: 'Adres',
+    // Vangt aaneengeschreven straatnamen (bijv. Kerkstraat 12, Zonnelaan 4-b), incl tot 5 cijfers voor huisnummer (+ toevoeging)
+    regex: /\b[A-Za-z\u00C0-\u00FF]{2,}(?:straat|weg|laan|dijk|pad|steeg|plein|hof|kade|singel|gracht|baan|dreef|plantsoen|park|burg|wal|heuvel|horst|kamp|veld|brink|oord|avenue|oever|gang|passage|promenade|erf|markt|streek|hoek|zijde|kant|water|gronden|vaart)\s+\d{1,5}(?:[\s\-]?[A-Za-z]{1,2})?(?:[\s\-]?\d{1,3})?\b/gi,
+    priority: 7,
+  },
+  {
+    category: 'adres',
+    label: 'Adres',
+    // Vangt losgeschreven straatnamen (bijv. Grote Markt 1, Laan van Meerdervoort 12, Korte Nieuwstraat 14)
+    regex: /\b(?:[A-Z\u00C0-\u00FF][a-z\u00E0-\u00FF]+\s+){1,4}(?:Straat|Weg|Laan|Plein|Hof|Kade|Singel|Gracht|Boulevard|Park|Plantsoen|Markt|Avenue|Oever|Gang|Passage|Promenade|Erf|Streek|Zijde|Water|Vaart)\s+\d{1,5}(?:[\s\-]?[A-Za-z]{1,2})?(?:[\s\-]?\d{1,3})?\b|\b(?:Straat|Weg|Laan|Plein|Boulevard|Kade|Avenue|Oever|Gang|Passage|Promenade|Erf|Markt)\s+(?:van\s+|de\s+|den\s+|der\s+|het\s+|'t\s+)?(?:[A-Z\u00C0-\u00FF][a-z\u00E0-\u00FF]+\s+){0,3}[A-Z\u00C0-\u00FF][a-z\u00E0-\u00FF]+\s+\d{1,5}(?:[\s\-]?[A-Za-z]{1,2})?(?:[\s\-]?\d{1,3})?\b/g,
+    priority: 7,
   },
   {
     category: 'datum',
     label: 'Datum',
-    // Numerieke datums: 15-03-2026, 15/03/2026, 15.03.2026, 2026-03-15, etc.
-    // Ondersteunt ook unicode dashes (en-dash, em-dash)
-    regex: /\b\d{1,2}[\-\/\.\u2013\u2014]\d{1,2}[\-\/\.\u2013\u2014]\d{2,4}\b|\b\d{4}[\-\/\.\u2013\u2014]\d{1,2}[\-\/\.\u2013\u2014]\d{1,2}\b/g,
+    // 8-digit data, YYYYMMDD of DDMMYYYY (optioneel met aan elkaar geplakte tijd _HHMM)
+    regex: /\b(?:(?:(?:19|20)\d{2})(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])(?:_[0-2]\d[0-5]\d)?|(?:0[1-9]|[12]\d|3[01])(?:0[1-9]|1[0-2])(?:(?:19|20)\d{2})(?:_[0-2]\d[0-5]\d)?)\b/g,
     priority: 9,
   },
   {
     category: 'datum',
     label: 'Datum',
-    // Tekstuele datums: 15 maart 2026, 2 jan 2024, of gewoon 1 april (jaartal is optioneel)
-    regex: /\b\d{1,2}\s+(?:januari|februari|maart|april|mei|juni|juli|augustus|september|oktober|november|december|jan|feb|mrt|apr|jun|jul|aug|sep|okt|nov|dec)\.?(?:\s+\d{2,4})?\b/gi,
+    // Numerieke datums met scheidingstekens: 15-03-2026, 15/03/2026, 2026-03-15, 25-03, 25/3, 25/03/26, etc.
+    // Dekt ook US (MM/DD/YYYY) en Computer (YYYY-MM-DD)
+    regex: /\b(?:\d{1,4}[\-\/\.\u2013\u2014]\d{1,2}[\-\/\.\u2013\u2014]\d{2,4}(?:_[0-2]\d[0-5]\d)?|\d{1,2}[\-\/]\d{1,2})\b/g,
+    priority: 9,
+  },
+  {
+    category: 'datum',
+    label: 'Datum',
+    // Tekstuele datums (NL & EN): 15 maart 2026, 2 jan 2024, mrt25, 25 mrt, March 15th 2026
+    regex: /\b(?:\d{1,2}\s*(?:januari|februari|maart|april|mei|juni|juli|augustus|september|oktober|november|december|jan|feb|mrt|mar|apr|may|jun|jul|aug|sep|okt|oct|nov|dec)\.?(?:\s*,?\s*\d{2,4})?|(?:januari|februari|maart|april|mei|juni|juli|augustus|september|oktober|november|december|jan|feb|mrt|mar|apr|may|jun|jul|aug|sep|okt|oct|nov|dec)\.?\s*\d{1,2}(?:\s*,?\s*\d{2,4})?)\b/gi,
+    priority: 9,
+  },
+  {
+    category: 'datum',
+    label: 'Datum',
+    // Apostrof jaartallen ('26 of ’26)
+    regex: /(?<=\s|^)['’]\d{2}\b/g,
     priority: 9,
   },
   {
     category: 'bsn',
     label: 'BSN',
-    // 9-cijferig nummer (Burger Service Nummer)
-    regex: /\b\d{9}\b/g,
+    // 9-cijferig nummer (Burger Service Nummer) incl notaties 1234-56-789
+    regex: /\b\d{4}[\s\-\/]\d{2}[\s\-\/]\d{3}\b|\b\d{3}[\s\-\/]\d{3}[\s\-\/]\d{3}\b|\b\d{9}\b/g,
     priority: 6,
   },
 ];
@@ -316,11 +343,11 @@ export function detectCategory(text) {
   text = text.trim();
   
   // E-mail
-  if (/^[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}$/.test(text)) {
+  if (/^[A-Za-z0-9._%+\-]+(?:@|\s*[\(\[\{]at[\)\]\}]\s*|\s+at\s+|\s+apestaartje\s+)[A-Za-z0-9.\-]+\.[A-Za-z]{2,}$/i.test(text)) {
     return { category: 'email', label: 'E-mailadres' };
   }
   // URL
-  if (/^https?:\/\//.test(text)) {
+  if (/^(?:(?:https?|ftps?|sftp|wss?|smb|ssh|file|git|svn):\/\/|www\.)[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}(?:\/[a-zA-Z0-9\-._~:\/?#\[\]@!$&'()*+,;=]*)?$|^[a-zA-Z0-9.\-]+\.(?:com|org|net|edu|gov|nl|be|de|fr|uk|es|it|eu|io|co|info|biz|me|tv|xyz|app|online|site|nu|ru|vlaanderen|amsterdam|frl)(?:\/[a-zA-Z0-9\-._~:\/?#\[\]@!$&'()*+,;=]*)?$/i.test(text)) {
     return { category: 'url', label: 'URL' };
   }
   // IBAN
@@ -328,23 +355,37 @@ export function detectCategory(text) {
     return { category: 'iban', label: 'IBAN' };
   }
   // Telefoon
-  if (/^(?:\+31|0\d)[\s\-]?\d/.test(text)) {
+  if (/^(?:(?:\+|00)[1-9]\d{0,2}[\s\-\.]?(?:\(0\))?|(?:\b|\()0\d{1,4}(?:\))?)[\s\-\.]?(?:\d[\s\-\.]?){5,12}\d$/.test(text)) {
     return { category: 'telefoon', label: 'Telefoonnummer' };
   }
   // Postcode
-  if (/^\d{4}\s?[A-Z]{2}$/.test(text)) {
+  if (/^\d{4}\s?[A-Za-z]{2}$/.test(text)) {
     return { category: 'postcode', label: 'Postcode' };
   }
-  // Datum (Numeriek: 15-03-2026)
-  if (/^\d{1,2}[\-\/\.]\d{1,2}[\-\/\.]\d{2,4}$/.test(text)) {
+  // Adres (Fysiek)
+  if (/^[A-Za-z\u00C0-\u00FF]{2,}(?:straat|weg|laan|dijk|pad|steeg|plein|hof|kade|singel|gracht|baan|dreef|plantsoen|park|burg|wal|heuvel|horst|kamp|veld|brink|oord|avenue|oever|gang|passage|promenade|erf|markt|streek|hoek|zijde|kant|water|gronden|vaart)\s+\d{1,5}(?:[\s\-]?[A-Za-z]{1,2})?(?:[\s\-]?\d{1,3})?$/i.test(text) ||
+      /^(?:[A-Z\u00C0-\u00FF][a-z\u00E0-\u00FF]+\s+){1,4}(?:Straat|Weg|Laan|Plein|Hof|Kade|Singel|Gracht|Boulevard|Park|Plantsoen|Markt|Avenue|Oever|Gang|Passage|Promenade|Erf|Streek|Zijde|Water|Vaart)\s+\d{1,5}(?:[\s\-]?[A-Za-z]{1,2})?(?:[\s\-]?\d{1,3})?$/.test(text) ||
+      /^(?:Straat|Weg|Laan|Plein|Boulevard|Kade|Avenue|Oever|Gang|Passage|Promenade|Erf|Markt)\s+(?:van\s+|de\s+|den\s+|der\s+|het\s+|'t\s+)?(?:[A-Z\u00C0-\u00FF][a-z\u00E0-\u00FF]+\s+){0,3}[A-Z\u00C0-\u00FF][a-z\u00E0-\u00FF]+\s+\d{1,5}(?:[\s\-]?[A-Za-z]{1,2})?(?:[\s\-]?\d{1,3})?$/.test(text)) {
+    return { category: 'adres', label: 'Adres' };
+  }
+  // Datum (8-digit met evt tijd)
+  if (/^(?:(?:19|20)\d{2})(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])(?:_[0-2]\d[0-5]\d)?$|^(?:0[1-9]|[12]\d|3[01])(?:0[1-9]|1[0-2])(?:(?:19|20)\d{2})(?:_[0-2]\d[0-5]\d)?$/.test(text)) {
     return { category: 'datum', label: 'Datum' };
   }
-  // Datum (Tekstueel: 1 april of 15 maart 2026)
-  if (/^\d{1,2}\s+(?:januari|februari|maart|april|mei|juni|juli|augustus|september|oktober|november|december|jan|feb|mrt|apr|jun|jul|aug|sep|okt|nov|dec)\.?(?:\s+\d{2,4})?$/i.test(text)) {
+  // Datum (Numeriek met scheidingstekens)
+  if (/^\d{1,4}[\-\/\.\u2013\u2014]\d{1,2}[\-\/\.\u2013\u2014]\d{2,4}(?:_[0-2]\d[0-5]\d)?$|^\d{1,2}[\-\/]\d{1,2}$/.test(text)) {
     return { category: 'datum', label: 'Datum' };
   }
-  // BSN (9 cijfers)
-  if (/^\d{9}$/.test(text)) {
+  // Datum (Tekstueel)
+  if (/^\d{1,2}\s*(?:januari|februari|maart|april|mei|juni|juli|augustus|september|oktober|november|december|jan|feb|mrt|mar|apr|may|jun|jul|aug|sep|okt|oct|nov|dec)\.?(?:\s*,?\s*\d{2,4})?$|^(?:januari|februari|maart|april|mei|juni|juli|augustus|september|oktober|november|december|jan|feb|mrt|mar|apr|may|jun|jul|aug|sep|okt|oct|nov|dec)\.?\s*\d{1,2}(?:\s*,?\s*\d{2,4})?$/i.test(text)) {
+    return { category: 'datum', label: 'Datum' };
+  }
+  // Datum (Apostrof jaar)
+  if (/^['’]\d{2}$/.test(text)) {
+    return { category: 'datum', label: 'Datum' };
+  }
+  // BSN (9 cijfers incl formaten)
+  if (/^\d{4}[\s\-\/]\d{2}[\s\-\/]\d{3}$|^\d{3}[\s\-\/]\d{3}[\s\-\/]\d{3}$|^\d{9}$/.test(text)) {
     return { category: 'bsn', label: 'BSN' };
   }
   // Puur getal

@@ -33,6 +33,29 @@ export function resetGenerator() {
 }
 
 /**
+ * Registreert eerder gebruikte vervangers (bijv. uit een ingeladen sleutelbestand)
+ * zodat deze niet opnieuw als "nieuwe" pseudoniemen worden uitgedeeld.
+ */
+export function registerUsedReplacements(mappings) {
+  if (!mappings || !Array.isArray(mappings)) return;
+  
+  for (const mapping of mappings) {
+    if (mapping.replacement && mapping.category === 'naam') {
+      const words = mapping.replacement.split(/\s+/);
+      const significantWords = words.filter(w => /^[A-Z\u00C0-\u00FF]/.test(w));
+      
+      if (significantWords.length >= 2) {
+        usedFirstNames.add(significantWords[0]);
+        usedLastNames.add(significantWords[significantWords.length - 1]);
+      } else if (significantWords.length === 1) {
+        usedFirstNames.add(significantWords[0]);
+        usedLastNames.add(significantWords[0]);
+      }
+    }
+  }
+}
+
+/**
  * Pak een willekeurig element uit een lijst dat nog niet is gebruikt.
  */
 function pickUnique(list, usedSet) {
@@ -94,31 +117,47 @@ export function generateReplacement(original, category) {
     }
 
     case 'email': {
-      const parts = original.split('@');
-      const localLength = parts[0].length;
+      const sepRegex = /@|\s*[\(\[\{]at[\)\]\}]\s*|\s+at\s+|\s+apestaartje\s+/i;
+      const match = original.match(sepRegex);
+      const separator = match ? match[0] : '@';
+      const parts = original.split(sepRegex);
+      const localLength = parts[0] ? parts[0].trim().length : 5;
       const fakeName = `gebruiker${randomDigits(Math.max(2, Math.min(localLength, 4)))}`;
       const domain = FAKE_DOMAINS[Math.floor(Math.random() * FAKE_DOMAINS.length)];
-      return `${fakeName}@${domain}`;
+      return `${fakeName}${separator}${domain}`;
     }
 
     case 'telefoon': {
-      // Behoud het formaat (met of zonder streepjes, spaties, etc.)
       const digitsOnly = original.replace(/\D/g, '');
-      let fakeDigits;
-      if (digitsOnly.startsWith('31')) {
-        fakeDigits = '31' + '6' + randomDigits(8);
+      let fakeDigits = '';
+      
+      // Kijk of we de "prefix" logisch kunnen behouden
+      if (digitsOnly.startsWith('316')) {
+         fakeDigits = '316' + randomDigits(Math.max(0, digitsOnly.length - 3));
+      } else if (digitsOnly.startsWith('3106')) {
+         fakeDigits = '3106' + randomDigits(Math.max(0, digitsOnly.length - 4));
       } else if (digitsOnly.startsWith('06')) {
-        fakeDigits = '06' + randomDigits(8);
+         fakeDigits = '06' + randomDigits(Math.max(0, digitsOnly.length - 2));
+      } else if (digitsOnly.startsWith('0031')) {
+         fakeDigits = '0031' + randomDigits(Math.max(0, digitsOnly.length - 4));
+      } else if (digitsOnly.startsWith('0')) {
+         // willekeurig lokaal nummer (vast net), we houden de eerste 3 (of 4) digits afhankelijk van lengte
+         const prefixLen = digitsOnly.length > 10 ? 4 : 3;
+         fakeDigits = digitsOnly.substring(0, prefixLen) + randomDigits(Math.max(0, digitsOnly.length - prefixLen));
       } else {
-        fakeDigits = randomDigits(digitsOnly.length);
+         // Compleet ander/buitenlands format: houd de eerste (country) digit(s) en randomiseer rest
+         fakeDigits = digitsOnly.substring(0, 2) + randomDigits(Math.max(0, digitsOnly.length - 2));
       }
       
-      // Probeer het originele formaat te behouden
+      // Forceer dat fakeDigits exact dezelfde lengte heeft als digitsOnly (voor de zekerheid)
+      fakeDigits = fakeDigits.slice(0, digitsOnly.length).padEnd(digitsOnly.length, String(Math.floor(Math.random() * 10)));
+      
+      // Probeer het originele formaat te behouden (incl spaties, haakjes +, etc)
       let result = '';
       let digitIndex = 0;
       for (const ch of original) {
         if (/\d/.test(ch)) {
-          result += digitIndex < fakeDigits.length ? fakeDigits[digitIndex++] : '0';
+          result += fakeDigits[digitIndex++];
         } else {
           result += ch;
         }
@@ -128,26 +167,75 @@ export function generateReplacement(original, category) {
 
     case 'postcode': {
       const hasSpace = original.includes(' ');
+      const isLower = /[a-z]/.test(original);
       const digits = randomDigits(4);
-      const letters = String.fromCharCode(65 + Math.floor(Math.random() * 26)) +
-                      String.fromCharCode(65 + Math.floor(Math.random() * 26));
+      let letters = String.fromCharCode(65 + Math.floor(Math.random() * 26)) +
+                    String.fromCharCode(65 + Math.floor(Math.random() * 26));
+      if (isLower) {
+        letters = letters.toLowerCase();
+      }
       return hasSpace ? `${digits} ${letters}` : `${digits}${letters}`;
     }
 
     case 'datum': {
-      // Behoud het formaat maar verander de waarden
-      const separator = original.match(/[\-\/\.]/)?.[0] || '-';
-      const parts = original.split(/[\-\/\.]/);
-      if (parts.length === 3) {
-        const day = String(Math.floor(Math.random() * 28) + 1).padStart(parts[0].length, '0');
-        const month = String(Math.floor(Math.random() * 12) + 1).padStart(parts[1].length, '0');
-        const yearLen = parts[2].length;
-        const year = yearLen === 4
-          ? String(Math.floor(Math.random() * 50) + 1970)
-          : String(Math.floor(Math.random() * 99)).padStart(2, '0');
-        return `${day}${separator}${month}${separator}${year}`;
+      // Is het 8-digit formaat (YYYYMMDD of DDMMYYYY) met optionele tijdstempel?
+      const eightDigitMatch = original.match(/^(\d{8})(?:_(\d{4}))?$/);
+      if (eightDigitMatch) {
+         const timePart = eightDigitMatch[2] ? `_${String(Math.floor(Math.random() * 24)).padStart(2, '0')}${String(Math.floor(Math.random() * 60)).padStart(2, '0')}` : '';
+         const isYYYYFirst = /^(?:19|20)\d{2}/.test(eightDigitMatch[1]);
+         const day = String(Math.floor(Math.random() * 28) + 1).padStart(2, '0');
+         const month = String(Math.floor(Math.random() * 12) + 1).padStart(2, '0');
+         const year = String(Math.floor(Math.random() * 50) + 1970);
+         const newDateBase = isYYYYFirst ? `${year}${month}${day}` : `${day}${month}${year}`;
+         return `${newDateBase}${timePart}`;
       }
-      return original; // Kon niet parseren, teruggeven
+      
+      // Is het apostrof jaar ('26 of ’26)
+      if (/^['’]\d{2}$/.test(original)) {
+        return `'${String(Math.floor(Math.random() * 99)).padStart(2, '0')}`;
+      }
+
+      // Bevat het letters? (Tekstuele datums zoals "25 maart 2026", "mrt25")
+      if (/[a-zA-Z]/.test(original)) {
+         return original.replace(/\d+/g, (m) => {
+           if (m.length === 4) return String(Math.floor(Math.random() * 50) + 1970);
+           return String(Math.floor(Math.random() * 28) + 1).padStart(m.length, '0');
+         });
+      }
+
+      // Anders: numeriek met scheidingstekens of spaties
+      const timeMatchSplit = original.match(/(_\d{4})$/);
+      const timeStr = timeMatchSplit ? `_${String(Math.floor(Math.random() * 24)).padStart(2, '0')}${String(Math.floor(Math.random() * 60)).padStart(2, '0')}` : '';
+      const dateOnly = original.replace(/(_\d{4})$/, '');
+
+      const separator = dateOnly.match(/[\-\/\.\u2013\u2014]/)?.[0];
+      if (separator) {
+        const parts = dateOnly.split(separator);
+        const randD = String(Math.floor(Math.random() * 28) + 1);
+        const randM = String(Math.floor(Math.random() * 12) + 1);
+        const randY4 = String(Math.floor(Math.random() * 50) + 1970);
+        const randY2 = String(Math.floor(Math.random() * 99)).padStart(2, '0');
+
+        const newParts = parts.map((p, idx) => {
+           if (p.length === 4) return randY4;
+           if (parts.length === 3) {
+             if (parts[0].length === 4) {
+                return idx === 1 ? randM.padStart(p.length, '0') : randD.padStart(p.length, '0');
+             }
+             if (idx === 0) return randD.padStart(p.length, '0');
+             if (idx === 1) return randM.padStart(p.length, '0');
+             if (idx === 2) return randY2.padStart(p.length, '0');
+           }
+           if (parts.length === 2) {
+             if (idx === 0) return randD.padStart(p.length, '0');
+             if (idx === 1) return randM.padStart(p.length, '0');
+           }
+           return p;
+        });
+        return newParts.join(separator) + timeStr;
+      }
+
+      return original; // Fallback
     }
 
     case 'iban': {
@@ -163,18 +251,45 @@ export function generateReplacement(original, category) {
     }
 
     case 'bsn': {
-      return randomDigits(9);
+      // Genereer 9 cijfers
+      const fake = randomDigits(9);
+      // Controleer origineel op formaten
+      if (/^\d{4}[\s\-\/]\d{2}[\s\-\/]\d{3}$/.test(original)) {
+        const sep = original.match(/[\s\-\/]/)[0];
+        return `${fake.slice(0,4)}${sep}${fake.slice(4,6)}${sep}${fake.slice(6,9)}`;
+      }
+      if (/^\d{3}[\s\-\/]\d{3}[\s\-\/]\d{3}$/.test(original)) {
+        const sep = original.match(/[\s\-\/]/)[0];
+        return `${fake.slice(0,3)}${sep}${fake.slice(3,6)}${sep}${fake.slice(6,9)}`;
+      }
+      return fake;
     }
 
     case 'url': {
-      const domain = FAKE_DOMAINS[Math.floor(Math.random() * FAKE_DOMAINS.length)];
-      // Behoud pad-structuur
-      try {
-        const url = new URL(original);
-        return `${url.protocol}//${domain}${url.pathname}`;
-      } catch {
-        return `https://${domain}/pagina`;
+      let prefix = '';
+      let cleanOriginal = original;
+      
+      const protocolMatch = original.match(/^([a-z]+:\/\/)/i);
+      if (protocolMatch) {
+         prefix = protocolMatch[1]; // e.g., 'sftp://', 'https://'
+         cleanOriginal = cleanOriginal.substring(prefix.length);
       }
+      
+      let hasWww = cleanOriginal.toLowerCase().startsWith('www.');
+      
+      const domain = FAKE_DOMAINS[Math.floor(Math.random() * FAKE_DOMAINS.length)];
+      
+      // Pad eruit vissen
+      let path = '';
+      const slashIndex = cleanOriginal.indexOf('/');
+      if (slashIndex !== -1) {
+        path = cleanOriginal.substring(slashIndex);
+      }
+      
+      let newDomain = domain;
+      if (hasWww && !newDomain.startsWith('www.')) newDomain = 'www.' + newDomain;
+      
+      return `${prefix}${newDomain}${path}`;
     }
 
     case 'nummer': {
@@ -183,6 +298,40 @@ export function generateReplacement(original, category) {
 
     case 'plaats': {
       return pickUnique(FAKE_CITIES, new Set()); // We hoeven steden niet per se uniek te houden over de hele tekst, maar kan wel
+    }
+
+    case 'adres': {
+      const match = original.match(/^(.*?)(\s+\d+.*)$/);
+      let street = original;
+      let numberPart = '';
+      if (match) {
+        street = match[1];
+        numberPart = match[2];
+      }
+      
+      const FAKE_PREFIXES = ['Kerk', 'Molen', 'Dorps', 'School', 'Spoor', 'Kastanje', 'Eiken', 'Beuken', 'Zonne', 'Beatrix', 'Wilhelmina', 'Juliana', 'Prins', 'Stations', 'Nieuwe', 'Oude'];
+      const FAKE_SUFFIXES = ['straat', 'weg', 'laan', 'dijk', 'plein', 'hof', 'singel'];
+      const MULTI_WORDS = ['Grote Markt', 'Brink', 'Oude Haven', 'Dorpsplein', 'Lange Weg', 'Nieuwe Gracht'];
+      
+      const isMultiWord = street.includes(' ');
+      let newStreet = '';
+      if (isMultiWord) {
+         newStreet = MULTI_WORDS[Math.floor(Math.random() * MULTI_WORDS.length)];
+      } else {
+         newStreet = FAKE_PREFIXES[Math.floor(Math.random() * FAKE_PREFIXES.length)] + 
+                     FAKE_SUFFIXES[Math.floor(Math.random() * FAKE_SUFFIXES.length)];
+      }
+      
+      let newNumberPart = '';
+      if (numberPart) {
+         newNumberPart = numberPart.replace(/\d+/g, (n) => {
+           return String(Math.floor(Math.random() * 200) + 1);
+         });
+      } else {
+         newNumberPart = ' ' + String(Math.floor(Math.random() * 200) + 1);
+      }
+      
+      return `${newStreet}${newNumberPart}`;
     }
 
     default:
