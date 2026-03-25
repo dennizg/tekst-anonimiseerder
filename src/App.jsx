@@ -11,6 +11,7 @@ const BackgroundParticles = lazy(() => import('./components/BackgroundParticles'
 import { detectPII, detectCategory } from './utils/detector';
 import { generateReplacement, resetGenerator, registerUsedReplacements } from './utils/generator';
 import { exportMappingFile, applyMappings, copyToClipboard, readTextFile, importMappingFile } from './utils/fileHandler';
+import packageJson from '../package.json';
 import './index.css';
 
 export default function App() {
@@ -455,10 +456,13 @@ export default function App() {
 
       {/* Footer */}
       <footer className="footer">
-          <p>Tekst Anonimiseerder — Jouw tekst wordt nergens opgeslagen en verlaat je eigen computer niet.</p>
+          <p>Tekst Anonimiseerder <span style={{ opacity: 0.6 }}>v{packageJson.version}</span> — Jouw tekst wordt nergens opgeslagen en verlaat je eigen computer niet.</p>
           <div className="footer__links">
             <button className="footer__link" onClick={() => setLegalModalType('privacy')}>Privacybeleid</button>
             <button className="footer__link" onClick={() => setLegalModalType('disclaimer')}>Disclaimer</button>
+            {/* Verborgen anchor-links voor security- en SEO-scanners */}
+            <a href="/privacy.html" style={{ display: 'none' }}>Privacybeleid SEO</a>
+            <a href="/disclaimer.html" style={{ display: 'none' }}>Disclaimer SEO</a>
           </div>
       </footer>
 
