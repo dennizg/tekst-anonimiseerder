@@ -1,10 +1,10 @@
-# Tekst Anonimiseerder 🛡️
+# (De-)Anonimiseerder 🛡️
 
 [![React](https://img.shields.io/badge/React-19.2-blue.svg)](https://reactjs.org/)
 [![Vite](https://img.shields.io/badge/Vite-8.0-purple.svg)](https://vitejs.dev/)
 [![Security](https://img.shields.io/badge/Security-A%2B-success.svg)](#)
 [![Privacy First](https://img.shields.io/badge/Privacy-100%25%20Local-success.svg)](#)
-[![Version](https://img.shields.io/badge/version-1.0.0-informational.svg)](#)
+[![Version](https://img.shields.io/badge/version-1.0.3-informational.svg)](#)
 
 Een veilige, bliksemsnelle en betrouwbare webapplicatie (SPA) ontworpen om teksten, notulen en persoonsgegevens (PII) te anonimiseren **zonder** dat er ooit data de browser verlaat. Alle verwerking en analyse vindt voor 100% lokaal in het werkgeheugen plaats.
 
@@ -17,7 +17,7 @@ Een veilige, bliksemsnelle en betrouwbare webapplicatie (SPA) ontworpen om tekst
 - **Consistente Pseudonimisering:** Genereert direct leesbare, context-bewuste vervangers (zoals `Jan de Vries` → `Sofie van Houten`) om de vloeiendheid in de tekst te behouden.
 - **Omkeerbaar (De-anonimiseren):** Exporteert na elke sessie een veilig `.anon` JSON-sleutelbestand. Deze fungeert als versleutelloze mapping om de originele tekst later simpel en exact te herstellen.
 - **Terugkerende Onderwerpen:** Ondersteuning voor het 'stacken' of uploaden van voorgaande `.anon` bestanden. Ideaal voor periodieke besprekingen waarbij dezelfde personen elke iteratie exact hetzelfde unieke pseudoniem moeten houden.
-- **State-of-the-Art UI:** Strak vormgegeven met *Glassmorphism*, in/uitklapbare tabbladen, vloeiende micro-interacties, responsief Mobile design en hoogwaardige dark/light-mode adaptatie.
+- **State-of-the-Art UI:** Strak vormgegeven met *Glassmorphism*, in/uitklapbare tabbladen, vloeiende micro-interacties, responsief Mobile design en een strak, contrastrijk dark-mode thema mét iconisch (De-)Anonimiseerder logo.
 
 ## 🔎 Wat wordt er feilloos herkend?
 

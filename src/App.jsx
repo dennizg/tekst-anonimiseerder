@@ -12,6 +12,7 @@ import { detectPII, detectCategory } from './utils/detector';
 import { generateReplacement, resetGenerator, registerUsedReplacements } from './utils/generator';
 import { exportMappingFile, applyMappings, copyToClipboard, readTextFile, importMappingFile } from './utils/fileHandler';
 import packageJson from '../package.json';
+import logoUrl from './assets/logo.png';
 import './index.css';
 
 export default function App() {
@@ -275,10 +276,13 @@ export default function App() {
       {/* Header */}
       <header className="header">
         <div className="header__content">
-          <h1 className="header__title">
-            <span className="header__icon">🛡️</span>
-            Tekst Anonimiseerder
-          </h1>
+          <div className="header__brand">
+            <img src={logoUrl} alt="Logo" className="header__logo" />
+            <div className="header__logo-text">
+              <span className="header__logo-text-prefix">(De-)</span>
+              <span className="header__logo-text-main">Anonimiseerder</span>
+            </div>
+          </div>
           <div className="header__privacy-badge">
             <span className="header__privacy-icon">🔒</span>
             Veilig — Jouw tekst blijft op je eigen computer en gaat niet naar het internet
@@ -456,7 +460,7 @@ export default function App() {
 
       {/* Footer */}
       <footer className="footer">
-          <p>Tekst Anonimiseerder <span style={{ opacity: 0.6 }}>v{packageJson.version}</span> — Jouw tekst wordt nergens opgeslagen en verlaat je eigen computer niet.</p>
+          <p>(De-)Anonimiseerder <span style={{ opacity: 0.6 }}>v{packageJson.version}</span> — Jouw tekst wordt nergens opgeslagen en verlaat je eigen computer niet.</p>
           <div className="footer__links">
             <button className="footer__link" onClick={() => setLegalModalType('privacy')}>Privacybeleid</button>
             <button className="footer__link" onClick={() => setLegalModalType('disclaimer')}>Disclaimer</button>
