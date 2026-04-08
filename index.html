@@ -3,18 +3,24 @@
   <head>
     <meta charset="UTF-8" />
     <!-- Security Headers -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; font-src 'self';" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; font-src 'self'; frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com;" />
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
     
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
+    <link rel="help" href="/privacy.html" title="Privacybeleid">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Anonimiseer teksten lokaal en veilig in je browser. Geen AI, geen servers — 100% privacy." />
     <title>(De-)Anonimiseerder — Veilig & Lokaal</title>
   </head>
   <body>
+    <noscript>
+      Dit is een volledig client-side (offline) applicatie. JavaScript is vereist om deze tool te gebruiken.
+      Wij hechten veel waarde aan privacy; al uw gegevens blijven 100% lokaal in uw browser. 
+      Bekijk ons <a href="/privacy.html">Privacybeleid</a> voor meer informatie over hoe wij transparantie garanderen.
+    </noscript>
     <div id="root">
       <style>
         .app-loader {

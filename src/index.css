@@ -433,6 +433,54 @@ body {
   color: var(--color-accent-hover);
 }
 
+/* --- Video Embeds --- */
+.videos-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  margin-top: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .videos-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.video-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.video-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.video-responsive-container {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 Aspect Ratio */
+  border-radius: 8px;
+  background-color: var(--color-bg-alt);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.video-responsive-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
 .dropzone__textarea {
   width: 100%;
   min-height: 280px;

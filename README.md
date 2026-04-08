@@ -4,7 +4,7 @@
 [![Vite](https://img.shields.io/badge/Vite-8.0-purple.svg)](https://vitejs.dev/)
 [![Security](https://img.shields.io/badge/Security-A%2B-success.svg)](#)
 [![Privacy First](https://img.shields.io/badge/Privacy-100%25%20Local-success.svg)](#)
-[![Version](https://img.shields.io/badge/version-1.0.3-informational.svg)](#)
+[![Version](https://img.shields.io/badge/version-1.0.4-informational.svg)](#)
 
 Een veilige, bliksemsnelle en betrouwbare webapplicatie (SPA) ontworpen om teksten, notulen en persoonsgegevens (PII) te anonimiseren **zonder** dat er ooit data de browser verlaat. Alle verwerking en analyse vindt voor 100% lokaal in het werkgeheugen plaats.
 
@@ -13,6 +13,8 @@ Een veilige, bliksemsnelle en betrouwbare webapplicatie (SPA) ontworpen om tekst
 ## 🚀 Belangrijkste Functies
 
 - **Privacy by Design:** Geen API's, geen databases, geen externe backend elementen. Alles draait offline in je eigen client.
+- **Instructievideo's:** Twee ingebedde YouTube tutorials (basis en geavanceerd gebruik) direct inzichtelijk in het uitleg-paneel.
+- **Transparantie:** 100% Open Source code vrij inzichtelijk op GitHub, als tastbaar bewijs van onze "Zero-AI" aanpak.
 - **Diepgaande Patroonherkenning:** Herkent geavanceerde datatypes via complexe reguliere expressies en gigantische ingebouwde referentielijsten (>2200 veelvoorkomende voornamen en >3300 wereldwijde/Nederlandse locaties).
 - **Consistente Pseudonimisering:** Genereert direct leesbare, context-bewuste vervangers (zoals `Jan de Vries` → `Sofie van Houten`) om de vloeiendheid in de tekst te behouden.
 - **Omkeerbaar (De-anonimiseren):** Exporteert na elke sessie een veilig `.anon` JSON-sleutelbestand. Deze fungeert als versleutelloze mapping om de originele tekst later simpel en exact te herstellen.
@@ -37,7 +39,7 @@ De engine is ontworpen (bewust zónder ondoorzichtige AI te gebruiken) op het tr
 
 Deze codebase is op het hoogste niveau verhard en geoptimaliseerd voor productie:
 - **Zero-Footprint:** Geen trackable analytics, geen cloud fingerprinting map-leaks (`build.sourcemap: false`), volledig AVG proof.
-- **Security Headers:** Strict geconfigureerd met Content Security Policies (CSP), X-Frame-Options (DENY) via `vercel.json` en legacy `_headers` bestanden voor absolute browser lockdown.
+- **Security Headers:** Strict geconfigureerd met Content Security Policies (CSP), frame-src support, X-Frame-Options (DENY) via `vercel.json` en legacy `_headers` bestanden voor absolute browser lockdown.
 - **Geoptimaliseerde Bundels:** Vite Manual-Chunking (Rollup Configuratie) separeert zware externe vendor blokken van de eigen applicatielogica voor sneller paralellizeren van browser caches.
 - **CSS Skeleton Loading:** Voorkomt Flash-Of-Unstyled-Content (FOUC), vult de DOM vóór React hydratatie en maximaliseert Performance scores bij scan-tools.
 - **Juridisch Dekkend:** Volledig ingebouwde dynamische én indexeerbare statische *Disclaimer* en *Privacybeleid* pagina's beschikbaar voor inspectie-crawlers.

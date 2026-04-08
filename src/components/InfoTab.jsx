@@ -92,7 +92,46 @@ export default function InfoTab({ onOpenLegalModal }) {
             </p>
           </div>
         </div>
-        <div className="info-tab__text" style={{ marginTop: '1.5rem', fontSize: '0.95rem', color: 'var(--color-text-light)', backgroundColor: 'var(--color-bg-alt)', padding: '1rem', borderRadius: '8px', borderLeft: '4px solid var(--color-accent)' }}>
+
+        {/* Instructievideo's (Verplaatst naar hier per verzoek) */}
+        <div style={{ marginTop: '2rem', marginBottom: '1rem' }}>
+          <h3 style={{ fontSize: '1.2rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <span>📺</span> Instructievideo's
+          </h3>
+          <div style={{ backgroundColor: 'var(--color-bg-surface)', border: '1px solid var(--color-border-glass)', borderRadius: 'var(--radius-md)', padding: '1.5rem' }}>
+            <p className="info-tab__text" style={{ margin: 0 }}>
+              Bekijk onderstaande video's voor een demonstratie van de functionaliteit.
+            </p>
+            <div className="videos-grid">
+              <div className="video-wrapper">
+                <h3 className="video-title">Basisfunctionaliteit</h3>
+                <p className="info-tab__text" style={{ fontSize: '0.85rem', marginBottom: '0.5rem' }}>Hoe gebruik je het?</p>
+                <div className="video-responsive-container">
+                  <iframe 
+                    src="https://www.youtube.com/embed/eMzP0NytqwM" 
+                    title="Basisfunctionaliteit Tekst Anonimiseerder" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowFullScreen
+                  ></iframe>
+                </div>
+              </div>
+              <div className="video-wrapper">
+                <h3 className="video-title">Geavanceerd gebruik</h3>
+                <p className="info-tab__text" style={{ fontSize: '0.85rem', marginBottom: '0.5rem' }}>Hoe boek je nóg meer tijdswinst?</p>
+                <div className="video-responsive-container">
+                  <iframe 
+                    src="https://www.youtube.com/embed/cTig0OphGnc" 
+                    title="Geavanceerd gebruik Tekst Anonimiseerder" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowFullScreen
+                  ></iframe>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="info-tab__text" style={{ marginTop: '3rem', fontSize: '0.95rem', color: 'var(--color-text-light)', backgroundColor: 'var(--color-bg-alt)', padding: '1rem', borderRadius: '8px', borderLeft: '4px solid var(--color-accent)' }}>
           <strong>💡 Tip voor terugkerende rapportages:</strong> Heb je volgende maand een nieuw verslag waar <em>Jan de Vries</em> weer in voorkomt? Laad dan vooraf je eerder bewaarde sleutelbestand (.anon) in. In de nieuwe geanonimiseerde tekst zal hij dan automatisch wéér <em>Sofie van Houten</em> heten!
         </div>
       </section>
@@ -181,6 +220,10 @@ export default function InfoTab({ onOpenLegalModal }) {
           <div className="info-tab__privacy-point info-tab__privacy-point--positive">
             <span className="info-tab__privacy-icon">✅</span>
             <p><strong>Geen opslag:</strong> Zodra je de website sluit, is alles direct onherroepelijk verdwenen. Er wordt absoluut niets opgeslagen.</p>
+          </div>
+          <div className="info-tab__privacy-point info-tab__privacy-point--positive">
+            <span className="info-tab__privacy-icon">✅</span>
+            <p><strong>Volledig Open Source:</strong> Wij beweren geen AI te gebruiken, maar we bewijzen het ook graag. De broncode van de (De-)Anonimiseerder is voor optimale transparantie <a href="https://github.com/dennizg/tekst-anonimiseerder" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-accent)', textDecoration: 'underline' }}>100% open source en openbaar in te zien via onze GitHub repository</a>.</p>
           </div>
         </div>
       </section>
