@@ -51,6 +51,37 @@
   --transition-slow: 400ms ease;
 }
 
+/* === Light Theme Variables === */
+[data-theme="light"] {
+  /* Kleuren */
+  --color-bg-deep: #e2e8f0; /* Darker slate-200 background to frame the white panels */
+  --color-bg-surface: rgba(0, 0, 0, 0.04); /* Inset effect for textareas */
+  --color-bg-glass: rgba(255, 255, 255, 0.9); /* Opaque white for the main glass panels */
+  --color-bg-glass-hover: rgba(255, 255, 255, 1);
+  --color-bg-glass-strong: #ffffff;
+  --color-border-glass: rgba(0, 0, 0, 0.08);
+  --color-border-glass-hover: rgba(0, 0, 0, 0.15);
+  
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #475569;
+  --color-text-muted: #64748b;
+  
+  --color-accent: #4f46e5;
+  --color-accent-hover: #4338ca;
+  --color-accent-glow: rgba(79, 70, 229, 0.25);
+  
+  --color-success: #16a34a;
+  --color-success-bg: rgba(22, 163, 74, 0.1);
+  --color-error: #dc2626;
+  --color-error-bg: rgba(220, 38, 38, 0.1);
+  --color-info: #2563eb;
+  --color-info-bg: rgba(37, 99, 235, 0.1);
+  
+  /* Iets sterkere schaduwen zodat de witte panelen loskomen van de lichtgrijze achtergrond */
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  --glass-shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.12);
+}
+
 /* === Reset & Base === */
 *, *::before, *::after {
   margin: 0;
@@ -210,6 +241,66 @@ body {
 
 .header__privacy-icon {
   font-size: 0.9rem;
+}
+
+.header__right {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.theme-toggle {
+  position: relative;
+  background: var(--color-bg-glass-strong);
+  border: 1px solid var(--color-border-glass);
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: var(--color-text-primary);
+  transition: all var(--transition-fast);
+  box-shadow: var(--glass-shadow);
+}
+
+.theme-toggle:hover {
+  background: var(--color-bg-glass-hover);
+  border-color: var(--color-accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--color-accent-glow);
+}
+
+.theme-toggle::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%) translateY(5px);
+  background: var(--color-bg-glass-strong);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--color-text-primary);
+  padding: 0.4rem 0.8rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all var(--transition-fast);
+  border: 1px solid var(--color-border-glass);
+  box-shadow: var(--glass-shadow);
+  z-index: 50;
+  pointer-events: none;
+}
+
+.theme-toggle:hover::after {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
 }
 
 /* === Tabs === */
@@ -384,6 +475,28 @@ body {
   padding: 0.5rem 0;
 }
 
+.anonymizer__base-upload {
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: var(--color-bg-surface);
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  transition: all var(--transition-fast);
+}
+
+.anonymizer__base-upload-label {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
+.anonymizer__base-upload:hover {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent-glow);
+}
+
 /* === DropZone === */
 .dropzone {
   position: relative;
@@ -524,7 +637,8 @@ body {
 
 .dropzone--file-only:hover {
   border-color: var(--color-accent);
-  background: var(--color-bg-glass);
+  border-style: solid;
+  box-shadow: 0 0 0 3px var(--color-accent-glow);
 }
 
 .dropzone__file-prompt {
@@ -1390,11 +1504,13 @@ body {
   padding: 0.75rem;
   background: var(--color-bg-surface);
   border-radius: var(--radius-md);
-  transition: background var(--transition-fast);
+  border: 1px solid transparent;
+  transition: all var(--transition-fast);
 }
 
 .info-tab__step:hover {
-  background: var(--color-bg-glass);
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent-glow);
 }
 
 .info-tab__step-number {
@@ -1514,11 +1630,13 @@ body {
   padding: 0.75rem;
   background: var(--color-bg-surface);
   border-radius: var(--radius-sm);
-  transition: background var(--transition-fast);
+  border: 1px solid transparent;
+  transition: all var(--transition-fast);
 }
 
 .info-tab__type-card:hover {
-  background: var(--color-bg-glass);
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent-glow);
 }
 
 .info-tab__type-icon {

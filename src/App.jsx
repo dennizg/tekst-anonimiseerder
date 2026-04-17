@@ -24,6 +24,10 @@ export default function App() {
   const [notification, setNotification] = useState(null);
   const [legalModalType, setLegalModalType] = useState(null);
   
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem('anon-theme') || 'dark';
+  });
+  
   const [baseMappings, setBaseMappings] = useState([]);
   const [baseFileName, setBaseFileName] = useState(null);
   
@@ -40,6 +44,15 @@ export default function App() {
       });
     }
   }, [activeTab]);
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('anon-theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+  };
 
   /**
    * Verwerkt de invoertekst en detecteert PII.
@@ -283,9 +296,19 @@ export default function App() {
               <span className="header__logo-text-main">Anonimiseerder</span>
             </div>
           </div>
-          <div className="header__privacy-badge">
-            <span className="header__privacy-icon">🔒</span>
-            Veilig — Jouw tekst blijft op je eigen computer en gaat niet naar het internet
+          <div className="header__right">
+            <div className="header__privacy-badge">
+              <span className="header__privacy-icon">🔒</span>
+              Veilig — Jouw tekst blijft op je eigen computer en gaat niet naar het internet
+            </div>
+            <button 
+              className="theme-toggle" 
+              onClick={toggleTheme} 
+              data-tooltip={theme === 'dark' ? 'Switch naar licht' : 'Switch naar donker'}
+              aria-label="Toggle theme"
+            >
+              {theme === 'dark' ? '☀️' : '🌙'}
+            </button>
           </div>
         </div>
       </header>
@@ -330,8 +353,8 @@ export default function App() {
                   </p>
                   
                   {/* Optioneel: Basis sleutelbestand uploaden */}
-                  <div className="anonymizer__base-upload" style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '1rem', background: 'rgba(255, 255, 255, 0.05)', padding: '0.75rem 1rem', borderRadius: '8px' }}>
-                    <span style={{ fontSize: '0.9rem', color: 'var(--color-text-dim)' }}>Optioneel:</span>
+                  <div className="anonymizer__base-upload">
+                    <span className="anonymizer__base-upload-label">Optioneel:</span>
                     <label className="btn btn--outline btn--small" style={{ margin: 0 }}>
                       Laad vorig sleutelbestand (.anon)
                       <input type="file" accept=".anon" style={{ display: 'none' }} onChange={handleBaseFileLoad} />
