@@ -39,10 +39,10 @@ De engine is ontworpen (bewust zónder ondoorzichtige AI te gebruiken) op het tr
 
 Deze codebase is op het hoogste niveau verhard en geoptimaliseerd voor productie:
 - **Zero-Footprint:** Geen trackable analytics, geen cloud fingerprinting map-leaks (`build.sourcemap: false`), volledig AVG proof.
-- **Security Headers:** Strict geconfigureerd met Content Security Policies (CSP), frame-src support, X-Frame-Options (DENY) via `vercel.json` en legacy `_headers` bestanden voor absolute browser lockdown.
+- **Security Headers:** Strict geconfigureerd met Content Security Policies (CSP) zonder kwetsbare `unsafe-inline` executie, gesloten `object-src`, frame-src support, en X-Frame-Options (DENY) via `vercel.json` en legacy `_headers` bestanden voor absolute browser lockdown. (Bekroond met hoge posities via Mozilla HTTP Observatory).
 - **Geoptimaliseerde Bundels:** Vite Manual-Chunking (Rollup Configuratie) separeert zware externe vendor blokken van de eigen applicatielogica voor sneller paralellizeren van browser caches.
 - **CSS Skeleton Loading:** Voorkomt Flash-Of-Unstyled-Content (FOUC), vult de DOM vóór React hydratatie en maximaliseert Performance scores bij scan-tools.
-- **Juridisch Dekkend:** Volledig ingebouwde dynamische én indexeerbare statische *Disclaimer* en *Privacybeleid* pagina's beschikbaar voor inspectie-crawlers.
+- **Juridisch Dekkend:** Volledig ingebouwde dynamische én indexeerbare statische *Disclaimer* en *Privacybeleid* pagina's. Door slimme server-rewrites navigeren geautomatiseerde privacy-scanners (via `/privacy` en `/terms`) foutloos naar de documentatie, resulterend in vlekkeloze compliance-rapporten.
 
 ## 🛠️ Installatie & Scripts
 
