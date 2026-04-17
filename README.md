@@ -4,7 +4,7 @@
 [![Vite](https://img.shields.io/badge/Vite-8.0-purple.svg)](https://vitejs.dev/)
 [![Security](https://img.shields.io/badge/Security-A%2B-success.svg)](#)
 [![Privacy First](https://img.shields.io/badge/Privacy-100%25%20Local-success.svg)](#)
-[![Version](https://img.shields.io/badge/version-1.1.0-informational.svg)](#)
+[![Version](https://img.shields.io/badge/version-1.1.1-informational.svg)](#)
 
 Een veilige, bliksemsnelle en betrouwbare webapplicatie (SPA) ontworpen om teksten, notulen en persoonsgegevens (PII) te anonimiseren **zonder** dat er ooit data de browser verlaat. Alle verwerking en analyse vindt voor 100% lokaal in het werkgeheugen plaats.
 
