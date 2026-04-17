@@ -6,7 +6,7 @@
 [![Privacy First](https://img.shields.io/badge/Privacy-100%25%20Local-success.svg)](#)
 [![Version](https://img.shields.io/badge/version-1.1.1-informational.svg)](#)
 
-Een veilige, bliksemsnelle en betrouwbare webapplicatie (SPA) ontworpen om teksten, notulen en persoonsgegevens (PII) te anonimiseren **zonder** dat er ooit data de browser verlaat. Alle verwerking en analyse vindt voor 100% lokaal in het werkgeheugen plaats.
+Een veilige, bliksemsnelle en betrouwbare webapplicatie (SPA) ontworpen om teksten, notulen en persoonsgegevens (PII) lokaal en **omkeerbaar te pseudonimiseren** zonder dat er ooit data de browser verlaat. Alle verwerking en analyse vindt voor 100% lokaal in het werkgeheugen plaats.
 
 ![Schermafbeelding Webapp](https://img.shields.io/badge/Screenshot-App-blue?style=for-the-badge) <!-- Optional screenshot placeholder -->
 
