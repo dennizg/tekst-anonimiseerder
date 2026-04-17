@@ -47,6 +47,11 @@ function PrivacyPolicy() {
         treden wij juridisch gezien niet op als 'Verwerker' in de zin van de Algemene Verordening Gegevensbescherming (AVG). 
         Je blijft als eindgebruiker te allen tijde zelf verantwoordelijk voor de rechtmatige gegevensverwerking en het veilig bewaren van het <code>.anon</code> sleutelbestand.
       </p>
+
+      <h3>5. Omkeerbare Pseudonimisering (i.p.v. Anonimisering)</h3>
+      <p>
+        We noemen het een "Anonimiseerder" voor de herkenbaarheid, maar omdat de oorspronkelijke persoonsgegevens kunnen worden teruggehaald met het <code>.anon</code> sleutelbestand dat u zelf bewaart, bedrijft deze tool in technische en juridische zin <strong>geen volledige anonimisering, maar (omkeerbare) pseudonimisering</strong>. Houd daarnaast altijd rekening met <strong>contextuele herleidbaarheid</strong>: zelfs zonder vermelding van directe namen, kan iemand alsnog herkend worden aan de specifieke unieke context van de tekst.
+      </p>
     </div>
   );
 }
@@ -63,14 +68,14 @@ function Disclaimer() {
         voor enige directe of indirecte schade die zou kunnen ontstaan door het gebruik van de tool.
       </p>
 
-      <h3>2. Geen garantie op volledige anonimisering</h3>
+      <h3>2. Geen garantie op volledige anonimisering (Pseudonimisering)</h3>
       <p>
-        Deze tool helpt bij het herkennen en vervangen van persoonsgegevens, maar <strong>geeft geen enkele garantie</strong> dat een 
-        tekst na gebruik 100% geanonimiseerd en onherleidbaar is. De patroonherkenning en ingebouwde lijsten zijn 
-        beperkt. Er kunnen <em>false positives</em> (foutieve markeringen) en <em>false negatives</em> (gemiste gegevens) optreden.
+        Deze tool helpt bij het lokaal herkennen en vervangen van directe persoonsgegevens, maar <strong>geeft geen enkele garantie</strong> dat een 
+        tekst na gebruik 100% onherleidbaar is. Vanwege het genereerde sleutelbestand (<code>.anon</code>) is de data technisch gezien "gepseudonimiseerd". 
+        Verder is de patroonherkenning beperkt en dekt de applicatie zelden tot nooit <strong>contextuele kenmerken</strong> af (bijv: "de 42 jarige directeur van basisschool X"). Er kunnen <em>false positives</em> en <em>false negatives</em> optreden.
       </p>
       <p>
-        <strong>Je bent te allen tijde zelf verantwoordelijk voor het kritisch controleren van de uiteindelijke tekst en het eventueel handmatig verwijderen van gemiste privacygevoelige gegevens.</strong>
+        <strong>Je bent te allen tijde zelf verantwoordelijk voor het inschatten van contextuele risico's, het kritisch controleren van de uiteindelijke tekst en het eventueel handmatig verwijderen of aanpassen van gemiste privacygevoelige omschrijvingen.</strong>
       </p>
 
       <h3>3. Geen juridisch advies</h3>

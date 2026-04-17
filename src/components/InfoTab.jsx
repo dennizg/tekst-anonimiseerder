@@ -15,9 +15,17 @@ export default function InfoTab({ onOpenLegalModal }) {
         </h2>
         <p className="info-tab__text">
           Deze tool helpt je om <strong>persoonsgevoelige informatie</strong> in teksten te vervangen 
-          door fictieve gegevens. Het bijzondere? Dit is <strong>omkeerbaar</strong>: met een 
-          sleutelbestand kun je later alles weer terugzetten naar de originele tekst.
+          door fictieve gegevens. Omdat dit proces <strong>omkeerbaar</strong> is via een gegenereerd sleutelbestand, 
+          creëer je in de formele juridische zin <em>gepseudonimiseerde</em> data in plaats van anonieme data.
         </p>
+        <div className="info-tab__alert" style={{ marginTop: '1rem', padding: '1rem', backgroundColor: 'var(--color-error-bg)', border: '1px solid var(--color-error)', borderRadius: 'var(--radius-sm)' }}>
+          <h3 style={{ margin: '0 0 0.5rem 0', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '1rem', color: 'var(--color-text-primary)' }}>
+            <span>⚠️</span> Let op: Contextuele Herleidbaarheid
+          </h3>
+          <p style={{ margin: 0, fontSize: '0.9rem', color: 'var(--color-text-primary)', lineHeight: 1.5 }}>
+            Het filteren van directe persoonsgegevens (zoals namen en adressen) garandeert <strong>niet</strong> direct dat een persoon onherkenbaar is. Unieke combinatie-beschrijvingen (zoals: <em>"De 42-jarige directeur van de kleinste basisschool in gemeente X"</em>) maken iemand vaak alsnog herleidbaar. <strong>Lees gepseudonimiseerde teksten dus altijd nog kritisch na.</strong>
+          </p>
+        </div>
       </section>
 
       {/* Hoe werkt het? */}

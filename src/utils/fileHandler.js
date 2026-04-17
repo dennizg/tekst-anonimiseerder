@@ -32,8 +32,10 @@ export function exportMappingFile(mappings) {
   const now = new Date();
   const dateStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
   
-  // Genereer 2 willekeurige blokken van 4 karakters
-  const randomStr = Math.random().toString(36).substring(2, 10).toUpperCase();
+  // Genereer 2 willekeurige blokken van 4 karakters via veilige Web Crypto API
+  const cryptoArray = new Uint8Array(4);
+  window.crypto.getRandomValues(cryptoArray);
+  const randomStr = Array.from(cryptoArray).map(b => b.toString(16).padStart(2, '0')).join('').toUpperCase();
   const suffix = `${randomStr.substring(0, 4)}-${randomStr.substring(4, 8)}`;
   
   link.download = `${dateStr}-Sleutelbestand-${suffix}.anon`;

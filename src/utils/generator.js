@@ -24,6 +24,16 @@ let usedLastNames = new Set();
 let usedCounters = {};
 
 /**
+ * Genereert een cryptografisch veilige random float tussen 0 en 1
+ * Ter vervanging van het onveilige Math.random()
+ */
+const secureRandom = () => {
+  const array = new Uint32Array(1);
+  window.crypto.getRandomValues(array);
+  return array[0] / 4294967296; // 2^32
+};
+
+/**
  * Reset de generator (voor een nieuwe sessie).
  */
 export function resetGenerator() {
@@ -64,9 +74,9 @@ function pickUnique(list, usedSet) {
     // Alles is op — voeg een nummer toe
     const counter = (usedCounters['overflow'] || 0) + 1;
     usedCounters['overflow'] = counter;
-    return list[Math.floor(Math.random() * list.length)] + counter;
+    return list[Math.floor(secureRandom() * list.length)] + counter;
   }
-  const picked = available[Math.floor(Math.random() * available.length)];
+  const picked = available[Math.floor(secureRandom() * available.length)];
   usedSet.add(picked);
   return picked;
 }
@@ -77,11 +87,11 @@ function pickUnique(list, usedSet) {
 function randomDigits(n) {
   let result = '';
   for (let i = 0; i < n; i++) {
-    result += Math.floor(Math.random() * 10).toString();
+    result += Math.floor(secureRandom() * 10).toString();
   }
   // Eerste cijfer mag niet 0 zijn (tenzij n==1)
   if (n > 1 && result[0] === '0') {
-    result = (Math.floor(Math.random() * 9) + 1).toString() + result.slice(1);
+    result = (Math.floor(secureRandom() * 9) + 1).toString() + result.slice(1);
   }
   return result;
 }
@@ -123,7 +133,7 @@ export function generateReplacement(original, category) {
       const parts = original.split(sepRegex);
       const localLength = parts[0] ? parts[0].trim().length : 5;
       const fakeName = `gebruiker${randomDigits(Math.max(2, Math.min(localLength, 4)))}`;
-      const domain = FAKE_DOMAINS[Math.floor(Math.random() * FAKE_DOMAINS.length)];
+      const domain = FAKE_DOMAINS[Math.floor(secureRandom() * FAKE_DOMAINS.length)];
       return `${fakeName}${separator}${domain}`;
     }
 
@@ -150,7 +160,7 @@ export function generateReplacement(original, category) {
       }
       
       // Forceer dat fakeDigits exact dezelfde lengte heeft als digitsOnly (voor de zekerheid)
-      fakeDigits = fakeDigits.slice(0, digitsOnly.length).padEnd(digitsOnly.length, String(Math.floor(Math.random() * 10)));
+      fakeDigits = fakeDigits.slice(0, digitsOnly.length).padEnd(digitsOnly.length, String(Math.floor(secureRandom() * 10)));
       
       // Probeer het originele formaat te behouden (incl spaties, haakjes +, etc)
       let result = '';
@@ -169,8 +179,8 @@ export function generateReplacement(original, category) {
       const hasSpace = original.includes(' ');
       const isLower = /[a-z]/.test(original);
       const digits = randomDigits(4);
-      let letters = String.fromCharCode(65 + Math.floor(Math.random() * 26)) +
-                    String.fromCharCode(65 + Math.floor(Math.random() * 26));
+      let letters = String.fromCharCode(65 + Math.floor(secureRandom() * 26)) +
+                    String.fromCharCode(65 + Math.floor(secureRandom() * 26));
       if (isLower) {
         letters = letters.toLowerCase();
       }
@@ -181,40 +191,40 @@ export function generateReplacement(original, category) {
       // Is het 8-digit formaat (YYYYMMDD of DDMMYYYY) met optionele tijdstempel?
       const eightDigitMatch = original.match(/^(\d{8})(?:_(\d{4}))?$/);
       if (eightDigitMatch) {
-         const timePart = eightDigitMatch[2] ? `_${String(Math.floor(Math.random() * 24)).padStart(2, '0')}${String(Math.floor(Math.random() * 60)).padStart(2, '0')}` : '';
+         const timePart = eightDigitMatch[2] ? `_${String(Math.floor(secureRandom() * 24)).padStart(2, '0')}${String(Math.floor(secureRandom() * 60)).padStart(2, '0')}` : '';
          const isYYYYFirst = /^(?:19|20)\d{2}/.test(eightDigitMatch[1]);
-         const day = String(Math.floor(Math.random() * 28) + 1).padStart(2, '0');
-         const month = String(Math.floor(Math.random() * 12) + 1).padStart(2, '0');
-         const year = String(Math.floor(Math.random() * 50) + 1970);
+         const day = String(Math.floor(secureRandom() * 28) + 1).padStart(2, '0');
+         const month = String(Math.floor(secureRandom() * 12) + 1).padStart(2, '0');
+         const year = String(Math.floor(secureRandom() * 50) + 1970);
          const newDateBase = isYYYYFirst ? `${year}${month}${day}` : `${day}${month}${year}`;
          return `${newDateBase}${timePart}`;
       }
       
       // Is het apostrof jaar ('26 of ’26)
       if (/^['’]\d{2}$/.test(original)) {
-        return `'${String(Math.floor(Math.random() * 99)).padStart(2, '0')}`;
+        return `'${String(Math.floor(secureRandom() * 99)).padStart(2, '0')}`;
       }
 
       // Bevat het letters? (Tekstuele datums zoals "25 maart 2026", "mrt25")
       if (/[a-zA-Z]/.test(original)) {
          return original.replace(/\d+/g, (m) => {
-           if (m.length === 4) return String(Math.floor(Math.random() * 50) + 1970);
-           return String(Math.floor(Math.random() * 28) + 1).padStart(m.length, '0');
+           if (m.length === 4) return String(Math.floor(secureRandom() * 50) + 1970);
+           return String(Math.floor(secureRandom() * 28) + 1).padStart(m.length, '0');
          });
       }
 
       // Anders: numeriek met scheidingstekens of spaties
       const timeMatchSplit = original.match(/(_\d{4})$/);
-      const timeStr = timeMatchSplit ? `_${String(Math.floor(Math.random() * 24)).padStart(2, '0')}${String(Math.floor(Math.random() * 60)).padStart(2, '0')}` : '';
+      const timeStr = timeMatchSplit ? `_${String(Math.floor(secureRandom() * 24)).padStart(2, '0')}${String(Math.floor(secureRandom() * 60)).padStart(2, '0')}` : '';
       const dateOnly = original.replace(/(_\d{4})$/, '');
 
       const separator = dateOnly.match(/[\-\/\.\u2013\u2014]/)?.[0];
       if (separator) {
         const parts = dateOnly.split(separator);
-        const randD = String(Math.floor(Math.random() * 28) + 1);
-        const randM = String(Math.floor(Math.random() * 12) + 1);
-        const randY4 = String(Math.floor(Math.random() * 50) + 1970);
-        const randY2 = String(Math.floor(Math.random() * 99)).padStart(2, '0');
+        const randD = String(Math.floor(secureRandom() * 28) + 1);
+        const randM = String(Math.floor(secureRandom() * 12) + 1);
+        const randY4 = String(Math.floor(secureRandom() * 50) + 1970);
+        const randY2 = String(Math.floor(secureRandom() * 99)).padStart(2, '0');
 
         const newParts = parts.map((p, idx) => {
            if (p.length === 4) return randY4;
@@ -241,7 +251,7 @@ export function generateReplacement(original, category) {
     case 'iban': {
       // NL + 2 check digits + 4 letter bankcode + 10 cijfers
       const bankCodes = ['ABNA', 'INGB', 'RABO', 'SNSB', 'TRIO', 'KNAB'];
-      const bank = bankCodes[Math.floor(Math.random() * bankCodes.length)];
+      const bank = bankCodes[Math.floor(secureRandom() * bankCodes.length)];
       const hasSpaces = original.includes(' ');
       const raw = `NL${randomDigits(2)}${bank}${randomDigits(10)}`;
       if (hasSpaces) {
@@ -277,7 +287,7 @@ export function generateReplacement(original, category) {
       
       let hasWww = cleanOriginal.toLowerCase().startsWith('www.');
       
-      const domain = FAKE_DOMAINS[Math.floor(Math.random() * FAKE_DOMAINS.length)];
+      const domain = FAKE_DOMAINS[Math.floor(secureRandom() * FAKE_DOMAINS.length)];
       
       // Pad eruit vissen
       let path = '';
@@ -316,19 +326,19 @@ export function generateReplacement(original, category) {
       const isMultiWord = street.includes(' ');
       let newStreet = '';
       if (isMultiWord) {
-         newStreet = MULTI_WORDS[Math.floor(Math.random() * MULTI_WORDS.length)];
+         newStreet = MULTI_WORDS[Math.floor(secureRandom() * MULTI_WORDS.length)];
       } else {
-         newStreet = FAKE_PREFIXES[Math.floor(Math.random() * FAKE_PREFIXES.length)] + 
-                     FAKE_SUFFIXES[Math.floor(Math.random() * FAKE_SUFFIXES.length)];
+         newStreet = FAKE_PREFIXES[Math.floor(secureRandom() * FAKE_PREFIXES.length)] + 
+                     FAKE_SUFFIXES[Math.floor(secureRandom() * FAKE_SUFFIXES.length)];
       }
       
       let newNumberPart = '';
       if (numberPart) {
          newNumberPart = numberPart.replace(/\d+/g, (n) => {
-           return String(Math.floor(Math.random() * 200) + 1);
+           return String(Math.floor(secureRandom() * 200) + 1);
          });
       } else {
-         newNumberPart = ' ' + String(Math.floor(Math.random() * 200) + 1);
+         newNumberPart = ' ' + String(Math.floor(secureRandom() * 200) + 1);
       }
       
       return `${newStreet}${newNumberPart}`;

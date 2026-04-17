@@ -43,6 +43,8 @@ Deze codebase is op het hoogste niveau verhard en geoptimaliseerd voor productie
 - **Extreme Prestaties:** Geoptimaliseerd voor een sub-seconde laadtijd gemeten via WebPageTest (LCP ~1.1s, CLS 0.0). Bereikt dankzij Vite Manual-Chunking, effectieve Brotli-compressie en CSS Skeleton Loading ter preventie van Flash-Of-Unstyled-Content (FOUC).
 - **Toegankelijkheid (WCAG):** Doorgelicht met geautomatiseerde `Axe` scanners. Kleuren, contrast ratio's (zowel in Light als Dark mode) en semantiek zijn strikt afgestemd op de >4.5:1 grens om een inclusieve en comfortabele ervaring te garanderen.
 - **Juridisch Dekkend:** Volledig ingebouwde dynamische én indexeerbare statische *Disclaimer* en *Privacybeleid* pagina's. Door slimme server-rewrites navigeren geautomatiseerde privacy-scanners (via `/privacy` en `/terms`) foutloos naar de documentatie, resulterend in vlekkeloze compliance-rapporten.
+- **Wettelijke Kaders & Pseudonimisering:** De tool faciliteert naleving van richtlijnen van SIVON, NCSC en de Autoriteit Persoonsgegevens (AP) aangaande dataminimalisatie en "lokale verwerking vóór cloud-upload". Omdat de output middels het gegenereerde `.anon` sleutelbestand weer te ontsleutelen is, produceert dit platform strikt juridisch gezien *(omkeerbare) gepseudonimiseerde* data. Gebruikers dienen zelf op contextuele identificeerbaarheid te letten.
+- **Transparantie & Community Audits:** Omdat de tool ontworpen is voor privacygevoelige teksten, staat deze Open Source codebase áltijd open voor onafhankelijke code-audits. Beveiligingsonderzoekers, instituten (zoals NCSC of AP) en ontwikkelaars worden actief uitgenodigd de repository te toetsen op kwetsbaarheden en verbeteringen aan te dragen.
 
 ## 🛠️ Installatie & Scripts
 
