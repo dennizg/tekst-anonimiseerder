@@ -6,10 +6,11 @@ import DropZone from './components/DropZone';
 const DeAnonymizer = lazy(() => import('./components/DeAnonymizer'));
 const InfoTab = lazy(() => import('./components/InfoTab'));
 const LegalModal = lazy(() => import('./components/LegalModal'));
+const FileAnonymizer = lazy(() => import('./components/FileAnonymizer'));
 const BackgroundParticles = lazy(() => import('./components/BackgroundParticles'));
 
 import { detectPII, detectCategory } from './utils/detector';
-import { generateReplacement, resetGenerator, registerUsedReplacements } from './utils/generator';
+import { generateReplacement, generatePlaceholder, resetGenerator, registerUsedReplacements } from './utils/generator';
 import { exportMappingFile, applyMappings, copyToClipboard, readTextFile, importMappingFile } from './utils/fileHandler';
 import packageJson from '../package.json';
 import logoUrl from './assets/logo.png';
@@ -21,13 +22,19 @@ export default function App() {
   const [mappings, setMappings] = useState([]);
   const [showResults, setShowResults] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [hasAnonymized, setHasAnonymized] = useState(false);
   const [notification, setNotification] = useState(null);
   const [legalModalType, setLegalModalType] = useState(null);
   
   const [theme, setTheme] = useState(() => {
-    return localStorage.getItem('anon-theme') || 'dark';
+    return localStorage.getItem('anon-theme') || 'light';
   });
   
+  // Modus: 'realistic' (fictieve namen/plaatsen) of 'placeholder' ([Persoon1], [Plaatsnaam1], …)
+  const [replacementMode, setReplacementMode] = useState(() => {
+    return localStorage.getItem('anon-replacement-mode') || 'realistic';
+  });
+
   const [baseMappings, setBaseMappings] = useState([]);
   const [baseFileName, setBaseFileName] = useState(null);
   
@@ -50,6 +57,35 @@ export default function App() {
     localStorage.setItem('anon-theme', theme);
   }, [theme]);
 
+  useEffect(() => {
+    localStorage.setItem('anon-replacement-mode', replacementMode);
+  }, [replacementMode]);
+
+  const toggleReplacementMode = () => {
+    setReplacementMode(prev => prev === 'realistic' ? 'placeholder' : 'realistic');
+  };
+
+  // Helper: gebruik de juiste generator op basis van de gekozen modus
+  const generate = useCallback((original, category) => {
+    return replacementMode === 'placeholder'
+      ? generatePlaceholder(original, category)
+      : generateReplacement(original, category);
+  }, [replacementMode]);
+
+  // Wanneer de modus wisselt: her-genereer alle bestaande vervangingen
+  useEffect(() => {
+    if (mappings.length === 0) return;
+    resetGenerator();
+    if (baseMappings.length > 0) registerUsedReplacements(baseMappings);
+    const gen = replacementMode === 'placeholder' ? generatePlaceholder : generateReplacement;
+    setMappings(prev => prev.map(m => ({
+      ...m,
+      replacement: gen(m.original, m.category),
+    })));
+  // Alleen draaien als de modus wisselt, niet als mappings veranderen
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [replacementMode]);
+
   const toggleTheme = () => {
     setTheme(prev => prev === 'dark' ? 'light' : 'dark');
   };
@@ -60,6 +96,7 @@ export default function App() {
   const handleTextInput = useCallback((text) => {
     setOriginalText(text);
     setCopied(false);
+    setHasAnonymized(false);
     
     if (!text || text.trim().length === 0) {
       setMappings([]);
@@ -89,14 +126,14 @@ export default function App() {
           original: item.original,
           category: item.category,
           label: item.label,
-          replacement: generateReplacement(item.original, item.category),
+          replacement: generate(item.original, item.category),
         });
       }
     });
 
     setMappings(newMappings);
     setShowResults(true);
-  }, [baseMappings]);
+  }, [baseMappings, generate]);
 
   /**
    * Verwerkt een gesleept bestand.
@@ -166,7 +203,7 @@ export default function App() {
     const { category, label } = detectCategory(text);
     
     // Genereer een vervanging
-    const replacement = generateReplacement(text, category);
+    const replacement = generate(text, category);
 
     const newMapping = {
       original: text,
@@ -177,7 +214,7 @@ export default function App() {
 
     setMappings(prev => [...prev, newMapping]);
     showNotification(`"${text}" toegevoegd als ${label}`, 'success');
-  }, [mappings]);
+  }, [mappings, generate]);
 
   /**
    * Anonimiseert de tekst, kopieert naar klembord en downloadt het .anon bestand.
@@ -192,6 +229,8 @@ export default function App() {
     // Dit voorkomt dat de browser de download blokkeert omdat de 'user gesture' 
     // verloren gaat tijdens het wachten op het async klembord
     exportMappingFile(mappings);
+
+    setHasAnonymized(true);
 
     // Kopieer naar klembord
     const success = await copyToClipboard(anonymizedText);
@@ -222,6 +261,7 @@ export default function App() {
     setMappings([]);
     setShowResults(false);
     setCopied(false);
+    setHasAnonymized(false);
     setBaseMappings([]);
     setBaseFileName(null);
     resetGenerator();
@@ -324,11 +364,18 @@ export default function App() {
           Anonimiseren
         </button>
         <button
+          className={`tabs__btn ${activeTab === 'files' ? 'tabs__btn--active' : ''}`}
+          onClick={() => setActiveTab('files')}
+        >
+          <span className="tabs__btn-icon">📂</span>
+          Bestanden
+        </button>
+        <button
           className={`tabs__btn ${activeTab === 'restore' ? 'tabs__btn--active' : ''}`}
           onClick={() => setActiveTab('restore')}
         >
           <span className="tabs__btn-icon">🔓</span>
-          Terugdraaien
+          De-anonimiseren
         </button>
         <button
           className={`tabs__btn ${activeTab === 'info' ? 'tabs__btn--active' : ''}`}
@@ -401,10 +448,20 @@ export default function App() {
 
                   {/* Rechts: Omzettingstabel */}
                   <div className="glass-panel anonymizer__table-panel">
-                    <h2 className="glass-panel__title">
-                      Omzettingstabel
-                      <span className="glass-panel__count">{mappings.length}</span>
-                    </h2>
+                    <div className="glass-panel__title-row">
+                      <h2 className="glass-panel__title">
+                        Omzettingstabel
+                        <span className="glass-panel__count">{mappings.length}</span>
+                      </h2>
+                      <button
+                        className="mode-toggle"
+                        onClick={toggleReplacementMode}
+                        data-tooltip={replacementMode === 'realistic' ? 'Schakel naar placeholders (bijv. Jan → [Persoon1])' : 'Schakel naar fictieve namen (bijv. Jan → Sofie)'}
+                        aria-label="Toggle replacement mode"
+                      >
+                        {replacementMode === 'realistic' ? '🔢' : '🎭'}
+                      </button>
+                    </div>
                     <ReplacementTable
                       mappings={mappings}
                       counts={mappingCounts}
@@ -454,17 +511,31 @@ export default function App() {
                       : '🛡️ Anonimiseer, Kopieer & Download Sleutelbestand'
                     }
                   </button>
+                  {replacementMode === 'placeholder' && hasAnonymized && (
+                    <div className="ai-tip-banner">
+                      <div>
+                        <strong>Handige tip voor AI-gebruik:</strong> Geef in een AI altijd de volgende instructie mee: <em>"Behoud alle placeholders tussen vierkante haken (zoals [Persoon1]) exact in deze opmaak."</em><br />
+                        Doe je dit niet, dan zal de AI er vaak zelf een draai aan geven (bijvoorbeeld door er [Naam] van te maken). Het terugdraaien mislukt dan, omdat de unieke sleutel ontbreekt.
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
           </div>
         )}
 
+        {activeTab === 'files' && (
+          <Suspense fallback={<div className="loading-spinner">Component wordt geladen...</div>}>
+            <FileAnonymizer onShowNotification={showNotification} replacementMode={replacementMode} toggleReplacementMode={toggleReplacementMode} />
+          </Suspense>
+        )}
+
         {activeTab === 'restore' && (
           <div className="glass-panel glass-panel--large">
-            <h2 className="glass-panel__title">Tekst terugdraaien</h2>
+            <h2 className="glass-panel__title">Terugdraaien</h2>
             <p className="glass-panel__subtitle">
-              Upload het <strong>.anon</strong> sleutelbestand en plak de geanonimiseerde tekst om deze te herstellen
+              Upload het <strong>.anon</strong> sleutelbestand en plak de geanonimiseerde tekst — of upload een geanonimiseerd bestand — om deze te herstellen.
             </p>
             <Suspense fallback={<div className="loading-spinner">Component wordt geladen...</div>}>
               <DeAnonymizer />

@@ -4,7 +4,7 @@
 [![Vite](https://img.shields.io/badge/Vite-8.0-purple.svg)](https://vitejs.dev/)
 [![Security](https://img.shields.io/badge/Security-A%2B-success.svg)](#)
 [![Privacy First](https://img.shields.io/badge/Privacy-100%25%20Local-success.svg)](#)
-[![Version](https://img.shields.io/badge/version-1.1.1-informational.svg)](#)
+[![Version](https://img.shields.io/badge/version-1.2.0-informational.svg)](#)
 
 Een veilige, bliksemsnelle en betrouwbare webapplicatie (SPA) ontworpen om teksten, notulen en persoonsgegevens (PII) lokaal en **omkeerbaar te pseudonimiseren** zonder dat er ooit data de browser verlaat. Alle verwerking en analyse vindt voor 100% lokaal in het werkgeheugen plaats.
 
@@ -18,8 +18,10 @@ Een veilige, bliksemsnelle en betrouwbare webapplicatie (SPA) ontworpen om tekst
 - **Diepgaande Patroonherkenning:** Herkent geavanceerde datatypes via complexe reguliere expressies en gigantische ingebouwde referentielijsten (>2200 veelvoorkomende voornamen en >3300 wereldwijde/Nederlandse locaties).
 - **Consistente Pseudonimisering:** Genereert direct leesbare, context-bewuste vervangers (zoals `Jan de Vries` → `Sofie van Houten`) om de vloeiendheid in de tekst te behouden.
 - **Omkeerbaar (De-anonimiseren):** Exporteert na elke sessie een veilig `.anon` JSON-sleutelbestand. Deze fungeert als versleutelloze mapping om de originele tekst later simpel en exact te herstellen.
+- **Document Ondersteuning:** Directe en naadloze verwerking van `.docx`, `.xlsx`, en `.csv` bestanden, waarbij de volledige opmaak en styling (bold, tabellen, kleuren) exact intact blijft na de-anonimisering. Bevat slimme detectie om verouderde `.doc` bestanden te blokkeren met duidelijke conversie-instructies.
+- **Twee Anonimiseringsmodi:** Kies dynamisch tussen *Realistische Vertaalslag* (waarbij namen worden vervangen door passend klinkende, fictieve namen voor betere leesbaarheid) en *Placeholder Modus* (voor exacte machinale verwerking zoals `[PERSOON_1]`). Inclusief geïntegreerde tips voor naadloos AI-gebruik.
 - **Terugkerende Onderwerpen:** Ondersteuning voor het 'stacken' of uploaden van voorgaande `.anon` bestanden. Ideaal voor periodieke besprekingen waarbij dezelfde personen elke iteratie exact hetzelfde unieke pseudoniem moeten houden.
-- **State-of-the-Art UI:** Strak vormgegeven met *Glassmorphism*, in/uitklapbare tabbladen, vloeiende micro-interacties en responsief Mobile design. Inclusief een adembenemend **Light / Dark Mode thema switch** mét lokaal opgeslagen voorkeur en ons iconische (De-)Anonimiseerder logo.
+- **State-of-the-Art UI:** Strak vormgegeven met *Glassmorphism*, in/uitklapbare tabbladen, geanimeerde drag-and-drop zones, vloeiende micro-interacties en responsief Mobile design. Inclusief een adembenemend **Light / Dark Mode thema switch** mét lokaal opgeslagen voorkeur en ons iconische (De-)Anonimiseerder logo.
 
 ## 🔎 Wat wordt er feilloos herkend?
 

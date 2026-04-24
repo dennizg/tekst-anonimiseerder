@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 /**
  * DropZone — Herbruikbaar drag-and-drop invoerveld
@@ -18,8 +18,19 @@ export default function DropZone({
 }) {
   const [isDragging, setIsDragging] = useState(false);
   const [fileName, setFileName] = useState(null);
+  const [iconIndex, setIconIndex] = useState(0);
   const textAreaRef = useRef(null);
   const dragCounter = useRef(0);
+
+  const icons = ['📁', '📄', '📊', '📝'];
+
+  useEffect(() => {
+    if (!fileOnly || fileName) return;
+    const interval = setInterval(() => {
+      setIconIndex((prev) => (prev + 1) % icons.length);
+    }, 2000);
+    return () => clearInterval(interval);
+  }, [fileOnly, fileName]);
 
   function handleDragEnter(e) {
     e.preventDefault();
@@ -116,7 +127,7 @@ export default function DropZone({
       ) : fileOnly ? (
         <div className="dropzone__file-prompt">
           <div className="dropzone__file-icon">
-            {fileName ? '✅' : '📁'}
+            {fileName ? '✅' : icons[iconIndex]}
           </div>
           <div className="dropzone__file-text">
             {fileName 

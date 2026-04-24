@@ -23,6 +23,36 @@ let usedFirstNames = new Set();
 let usedLastNames = new Set();
 let usedCounters = {};
 
+// ── Placeholder-modus ──────────────────────────────────────────────────────
+// Doorgenummerde labels per categorie: [Persoon1], [Plaatsnaam1], etc.
+
+const PLACEHOLDER_LABELS = {
+  naam:     'Persoon',
+  email:    'E-mailadres',
+  telefoon: 'Telefoonnummer',
+  postcode: 'Postcode',
+  datum:    'Datum',
+  iban:     'IBAN',
+  bsn:      'BSN',
+  url:      'URL',
+  nummer:   'Nummer',
+  plaats:   'Plaatsnaam',
+  adres:    'Adres',
+};
+
+let placeholderCounters = {};
+
+/**
+ * Genereert een doorgenummerde placeholder op basis van de categorie.
+ * Bijv. [Persoon1], [Persoon2], [Plaatsnaam1], …
+ */
+export function generatePlaceholder(original, category) {
+  const label = PLACEHOLDER_LABELS[category] || 'Anoniem';
+  if (!placeholderCounters[category]) placeholderCounters[category] = 0;
+  placeholderCounters[category]++;
+  return `[${label}${placeholderCounters[category]}]`;
+}
+
 /**
  * Genereert een cryptografisch veilige random float tussen 0 en 1
  * Ter vervanging van het onveilige Math.random()
@@ -40,6 +70,7 @@ export function resetGenerator() {
   usedFirstNames = new Set();
   usedLastNames = new Set();
   usedCounters = {};
+  placeholderCounters = {};
 }
 
 /**

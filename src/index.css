@@ -249,7 +249,7 @@ body {
   gap: 1.25rem;
 }
 
-.theme-toggle {
+.theme-toggle, .mode-toggle {
   position: relative;
   background: var(--color-bg-glass-strong);
   border: 1px solid var(--color-border-glass);
@@ -266,14 +266,14 @@ body {
   box-shadow: var(--glass-shadow);
 }
 
-.theme-toggle:hover {
+.theme-toggle:hover, .mode-toggle:hover {
   background: var(--color-bg-glass-hover);
   border-color: var(--color-accent);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px var(--color-accent-glow);
 }
 
-.theme-toggle::after {
+.theme-toggle::after, .mode-toggle::after {
   content: attr(data-tooltip);
   position: absolute;
   top: calc(100% + 10px);
@@ -297,10 +297,22 @@ body {
   pointer-events: none;
 }
 
+.mode-toggle::after {
+  left: auto;
+  right: 0;
+  transform: translateX(0) translateY(5px);
+}
+
 .theme-toggle:hover::after {
   opacity: 1;
   visibility: visible;
   transform: translateX(-50%) translateY(0);
+}
+
+.mode-toggle:hover::after {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0) translateY(0);
 }
 
 /* === Tabs === */
@@ -471,12 +483,25 @@ body {
 
 .anonymizer__actions {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
   padding: 0.5rem 0;
 }
 
+.anonymizer__actions .btn {
+  width: 100%;
+}
+
+.anonymizer__actions-hint {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  text-align: center;
+  margin: 0;
+}
+
 .anonymizer__base-upload {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.75rem;
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -1255,6 +1280,10 @@ body {
   animation: fade-in-up 0.4s ease;
 }
 
+.de-anonymizer__result .btn {
+  width: 100%;
+}
+
 .de-anonymizer__result-title {
   font-size: 1.1rem;
   font-weight: 600;
@@ -1892,5 +1921,212 @@ body {
 
 @keyframes slideUp {
   from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* === FileAnonymizer === */
+.file-anonymizer {
+  animation: slideUp 0.3s ease;
+}
+
+.file-anonymizer__upload-stage {
+  display: flex;
+  justify-content: center;
+  padding-top: 2rem;
+}
+
+.file-anonymizer__upload-stage .glass-panel {
+  width: 100%;
+  max-width: 800px;
+}
+
+/* Dropzone */
+.file-anonymizer__dropzone {
+  margin-top: 1.75rem;
+  border: 2px dashed var(--color-border-glass);
+  border-radius: var(--radius-lg);
+  padding: 3rem 2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  background: var(--color-bg-surface);
+}
+
+.file-anonymizer__dropzone:hover,
+.file-anonymizer__dropzone--dragging {
+  border-color: var(--color-accent);
+  border-style: solid;
+  background: rgba(99, 102, 241, 0.06);
+  box-shadow: 0 0 0 4px var(--color-accent-glow);
+  transform: scale(1.005);
+}
+
+.file-anonymizer__dropzone--loading {
+  cursor: default;
+  pointer-events: none;
+}
+
+.file-anonymizer__dropzone-icon {
+  font-size: 3rem;
+  margin-bottom: 0.75rem;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.file-anonymizer__dropzone-text {
+  color: var(--color-text-secondary);
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.file-anonymizer__dropzone-hint {
+  margin-top: 0.75rem;
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+}
+
+/* Loading state */
+.file-anonymizer__loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  color: var(--color-text-secondary);
+}
+
+.file-anonymizer__spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--color-border-glass);
+  border-top-color: var(--color-accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Warning banner */
+.file-anonymizer__warning {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  background: rgba(217, 119, 6, 0.1);
+  border: 1px solid rgba(217, 119, 6, 0.3);
+  border-radius: var(--radius-md);
+  padding: 0.9rem 1.1rem;
+  margin: 1.75rem 0;
+  font-size: 0.88rem;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+.file-anonymizer__warning-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.file-anonymizer__warning strong {
+  color: var(--color-text-primary);
+}
+
+/* Results stage */
+.file-anonymizer__results-stage {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* File bar */
+.file-anonymizer__file-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--color-bg-glass);
+  border: 1px solid var(--color-border-glass);
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1.25rem;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.file-anonymizer__file-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.file-anonymizer__file-icon {
+  font-size: 1.75rem;
+}
+
+.file-anonymizer__file-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--color-text-primary);
+}
+
+.file-anonymizer__file-type {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+/* Done banner */
+.file-anonymizer__done-banner {
+  background: var(--color-success-bg);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  border-radius: var(--radius-md);
+  padding: 0.9rem 1.25rem;
+  font-weight: 500;
+  color: var(--color-success);
+  text-align: center;
+  animation: fadeIn 0.3s ease;
+}
+
+/* De-Anonymizer bestand-upload rij */
+.de-anonymizer__file-upload {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-top: 0.85rem;
+  padding: 0.65rem 0.9rem;
+  background: var(--color-bg-surface);
+  border: 1px dashed var(--color-border-glass);
+  border-radius: var(--radius-sm);
+  flex-wrap: wrap;
+}
+
+.de-anonymizer__file-upload-label {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.ai-tip-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: linear-gradient(rgba(251, 191, 36, 0.08), rgba(251, 191, 36, 0.08)), var(--color-bg-glass);
+  border: 1px solid rgba(251, 191, 36, 0.2);
+  border-radius: var(--radius-md);
+  margin-top: 1rem;
+  color: var(--color-text-primary);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  text-align: left;
+  width: 100%;
+  box-sizing: border-box;
+  animation: fade-in 0.3s ease;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(-10px); }
   to { opacity: 1; transform: translateY(0); }
 }
