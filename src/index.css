@@ -63,8 +63,8 @@
   --color-border-glass-hover: rgba(0, 0, 0, 0.15);
   
   --color-text-primary: #0f172a;
-  --color-text-secondary: #475569;
-  --color-text-muted: #64748b;
+  --color-text-secondary: #334155; /* Iets donkerder voor beter contrast */
+  --color-text-muted: #4b5563; /* Donkerder grijs voor WCAG AA compliance (4.5:1+) */
   
   --color-accent: #4f46e5;
   --color-accent-hover: #4338ca;
@@ -1901,10 +1901,10 @@ body {
 .footer__link {
   background: none;
   border: none;
-  color: var(--color-text-secondary); /* Iets lichtere grijstint voor betere zichtbaarheid */
+  color: var(--color-text-secondary);
   font-size: 0.85rem;
   cursor: pointer;
-  opacity: 0.75; /* Dekking flink verhoogd */
+  opacity: 1; /* Contrast-fix voor toegankelijkheid */
   transition: all var(--transition-fast);
 }
 

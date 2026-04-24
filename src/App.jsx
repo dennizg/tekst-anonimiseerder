@@ -554,7 +554,7 @@ export default function App() {
 
       {/* Footer */}
       <footer className="footer">
-          <p>(De-)Anonimiseerder <span style={{ opacity: 0.6 }}>v{packageJson.version}</span> — Jouw tekst wordt nergens opgeslagen en verlaat je eigen computer niet.</p>
+          <p>(De-)Anonimiseerder <span style={{ opacity: 0.85 }}>v{packageJson.version}</span> — Jouw tekst wordt nergens opgeslagen en verlaat je eigen computer niet.</p>
           <div className="footer__links">
             <button className="footer__link" onClick={() => setLegalModalType('privacy')}>Privacybeleid</button>
             <button className="footer__link" onClick={() => setLegalModalType('disclaimer')}>Disclaimer</button>
