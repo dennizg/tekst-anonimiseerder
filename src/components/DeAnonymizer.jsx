@@ -14,7 +14,7 @@ import { writeBackToFile } from '../utils/documentHandler';
 const DOC_EXTENSIONS = ['.docx', '.xlsx', '.xls', '.csv'];
 
 export default function DeAnonymizer() {
-  // Sleutelbestand
+  // Omzettingsbestand
   const [mappings, setMappings] = useState(null);
   const [mappingFileName, setMappingFileName] = useState('');
 
@@ -30,7 +30,7 @@ export default function DeAnonymizer() {
 
   const [error, setError] = useState('');
 
-  // ── Sleutelbestand laden ─────────────────────────────────────────────────
+  // ── Omzettingsbestand laden ─────────────────────────────────────────────────
 
   async function handleMappingFile(file) {
     try {
@@ -106,11 +106,11 @@ export default function DeAnonymizer() {
     <div className="de-anonymizer">
       <div className="de-anonymizer__inputs">
 
-        {/* Stap 1: Sleutelbestand */}
+        {/* Stap 1: Omzettingsbestand */}
         <div className="de-anonymizer__section">
           <h3 className="de-anonymizer__section-title">
             <span className="de-anonymizer__step-number">1</span>
-            Upload het sleutelbestand
+            Upload het omzettingsbestand
           </h3>
           <DropZone
             onFileReceived={handleMappingFile}
@@ -141,9 +141,9 @@ export default function DeAnonymizer() {
           />
 
           {/* Bestand-uploaden */}
-          <div className="de-anonymizer__file-upload">
+          <label className="de-anonymizer__file-upload" style={{ cursor: 'pointer' }}>
             <span className="de-anonymizer__file-upload-label">Of herstel een bestand:</span>
-            <label className="btn btn--outline btn--small" style={{ margin: 0 }}>
+            <div className="dropzone__file-button" style={{ margin: 0, padding: '0.35rem 0.7rem' }}>
               📂 Kies .docx / .xlsx / .csv
               <input
                 type="file"
@@ -151,11 +151,11 @@ export default function DeAnonymizer() {
                 style={{ display: 'none' }}
                 onChange={(e) => { if (e.target.files[0]) handleDocFile(e.target.files[0]); e.target.value = ''; }}
               />
-            </label>
+            </div>
             {docFile && (
               <span style={{ fontSize: '0.9rem', opacity: 0.8 }}>📄 {docFile.name}</span>
             )}
-          </div>
+          </label>
         </div>
       </div>
 
@@ -182,7 +182,7 @@ export default function DeAnonymizer() {
           <h3 className="de-anonymizer__result-title">📄 Bestand herstellen</h3>
           <p style={{ marginBottom: '1rem', opacity: 0.8, fontSize: '0.95rem' }}>
             Het bestand <strong>{docFile.name}</strong> wordt hersteld naar het origineel met behulp van
-            het sleutelbestand <strong>{mappingFileName}</strong>.
+            het omzettingsbestand <strong>{mappingFileName}</strong>.
           </p>
           {fileRestored ? (
             <div className="file-anonymizer__done-banner">

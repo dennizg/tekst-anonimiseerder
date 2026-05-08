@@ -45,12 +45,12 @@ function PrivacyPolicy() {
       <p>
         Omdat deze applicatie uitsluitend in je browser draait en wij geen data van onze gebruikers (of de in de tool verwerkte teksten) opslaan of inzien, 
         treden wij juridisch gezien niet op als 'Verwerker' in de zin van de Algemene Verordening Gegevensbescherming (AVG). 
-        Je blijft als eindgebruiker te allen tijde zelf verantwoordelijk voor de rechtmatige gegevensverwerking en het veilig bewaren van het <code>.anon</code> sleutelbestand.
+        Je blijft als eindgebruiker te allen tijde zelf verantwoordelijk voor de rechtmatige gegevensverwerking en het veilig bewaren van het <code>.anon</code> omzettingsbestand.
       </p>
 
       <h3>5. Omkeerbare Pseudonimisering (i.p.v. Anonimisering)</h3>
       <p>
-        We noemen het een "Anonimiseerder" voor de herkenbaarheid, maar omdat de oorspronkelijke persoonsgegevens kunnen worden teruggehaald met het <code>.anon</code> sleutelbestand dat u zelf bewaart, bedrijft deze tool in technische en juridische zin <strong>geen volledige anonimisering, maar (omkeerbare) pseudonimisering</strong>. Houd daarnaast altijd rekening met <strong>contextuele herleidbaarheid</strong>: zelfs zonder vermelding van directe namen, kan iemand alsnog herkend worden aan de specifieke unieke context van de tekst.
+        We noemen het een "Anonimiseerder" voor de herkenbaarheid, maar omdat de oorspronkelijke persoonsgegevens kunnen worden teruggehaald met het <code>.anon</code> omzettingsbestand dat u zelf bewaart, bedrijft deze tool in technische en juridische zin <strong>geen volledige anonimisering, maar (omkeerbare) pseudonimisering</strong>. Houd daarnaast altijd rekening met <strong>contextuele herleidbaarheid</strong>: zelfs zonder vermelding van directe namen, kan iemand alsnog herkend worden aan de specifieke unieke context van de tekst.
       </p>
     </div>
   );
@@ -71,7 +71,7 @@ function Disclaimer() {
       <h3>2. Geen garantie op volledige anonimisering (Pseudonimisering)</h3>
       <p>
         Deze tool helpt bij het lokaal herkennen en vervangen van directe persoonsgegevens, maar <strong>geeft geen enkele garantie</strong> dat een 
-        tekst na gebruik 100% onherleidbaar is. Vanwege het genereerde sleutelbestand (<code>.anon</code>) is de data technisch gezien "gepseudonimiseerd". 
+        tekst na gebruik 100% onherleidbaar is. Vanwege het genereerde omzettingsbestand (<code>.anon</code>) is de data technisch gezien "gepseudonimiseerd". 
         Verder is de patroonherkenning beperkt en dekt de applicatie zelden tot nooit <strong>contextuele kenmerken</strong> af (bijv: "de 42 jarige directeur van basisschool X"). Er kunnen <em>false positives</em> en <em>false negatives</em> optreden.
       </p>
       <p>

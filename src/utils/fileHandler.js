@@ -9,7 +9,7 @@
  * Exporteert de omzettingstabel als een .anon bestand (JSON).
  * Triggert automatisch een download in de browser.
  */
-export function exportMappingFile(mappings) {
+export function exportMappingFile(mappings, originalFilename = null) {
   const data = {
     version: '1.0',
     created: new Date().toISOString(),
@@ -28,17 +28,23 @@ export function exportMappingFile(mappings) {
   const link = document.createElement('a');
   link.href = url;
   
-  // Bestandsnaam: yyyy-mm-dd-Sleutelbestand-xxxx-xxxx.anon (x = letters/cijfers)
+  // Bestandsnaam: yyyy-mm-dd Omzettingsbestand - Naam.anon of [XXXX]-[XXXX].anon
   const now = new Date();
   const dateStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
   
-  // Genereer 2 willekeurige blokken van 4 karakters via veilige Web Crypto API
-  const cryptoArray = new Uint8Array(4);
-  window.crypto.getRandomValues(cryptoArray);
-  const randomStr = Array.from(cryptoArray).map(b => b.toString(16).padStart(2, '0')).join('').toUpperCase();
-  const suffix = `${randomStr.substring(0, 4)}-${randomStr.substring(4, 8)}`;
+  let namePart;
+  if (originalFilename) {
+    const base = originalFilename.includes('.') ? originalFilename.slice(0, originalFilename.lastIndexOf('.')) : originalFilename;
+    namePart = `- ${base}`;
+  } else {
+    // Genereer 2 willekeurige blokken van 4 karakters via veilige Web Crypto API
+    const cryptoArray = new Uint8Array(4);
+    window.crypto.getRandomValues(cryptoArray);
+    const randomStr = Array.from(cryptoArray).map(b => b.toString(16).padStart(2, '0')).join('').toUpperCase();
+    namePart = `[${randomStr.substring(0, 4)}]-[${randomStr.substring(4, 8)}]`;
+  }
   
-  link.download = `${dateStr}-Sleutelbestand-${suffix}.anon`;
+  link.download = `${dateStr} Omzettingsbestand ${namePart}.anon`;
   
   document.body.appendChild(link);
   link.click();

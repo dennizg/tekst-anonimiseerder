@@ -74,7 +74,7 @@ export function resetGenerator() {
 }
 
 /**
- * Registreert eerder gebruikte vervangers (bijv. uit een ingeladen sleutelbestand)
+ * Registreert eerder gebruikte vervangers (bijv. uit een ingeladen omzettingsbestand)
  * zodat deze niet opnieuw als "nieuwe" pseudoniemen worden uitgedeeld.
  */
 export function registerUsedReplacements(mappings) {

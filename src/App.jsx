@@ -148,7 +148,7 @@ export default function App() {
   }, [handleTextInput]);
 
   /**
-   * Laadt een bestaand .anon sleutelbestand als basis
+   * Laadt een bestaand .anon omzettingsbestand als basis
    */
   const handleBaseFileLoad = useCallback(async (e) => {
     const file = e.target.files[0];
@@ -240,7 +240,7 @@ export default function App() {
     }
 
     showNotification(
-      'Tekst gekopieerd naar klembord en sleutelbestand gedownload!',
+      'Tekst gekopieerd naar klembord en omzettingsbestand gedownload!',
       'success'
     );
   }, [originalText, mappings]);
@@ -338,7 +338,7 @@ export default function App() {
           </div>
           <div className="header__right">
             <div className="header__privacy-badge">
-              <span className="header__privacy-icon">🔒</span>
+              <svg className="header__privacy-icon" viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd"/></svg>
               Veilig — Jouw tekst blijft op je eigen computer en gaat niet naar het internet
             </div>
             <button 
@@ -347,7 +347,11 @@ export default function App() {
               data-tooltip={theme === 'dark' ? 'Switch naar licht' : 'Switch naar donker'}
               aria-label="Toggle theme"
             >
-              {theme === 'dark' ? '☀️' : '🌙'}
+              {theme === 'dark' ? (
+                <svg viewBox="0 0 20 20" fill="currentColor" width="18" height="18"><path fillRule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clipRule="evenodd"/></svg>
+              ) : (
+                <svg viewBox="0 0 20 20" fill="currentColor" width="18" height="18"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/></svg>
+              )}
             </button>
           </div>
         </div>
@@ -360,28 +364,28 @@ export default function App() {
           className={`tabs__btn ${activeTab === 'anonymize' ? 'tabs__btn--active' : ''}`}
           onClick={() => setActiveTab('anonymize')}
         >
-          <span className="tabs__btn-icon">🔒</span>
+          <span className="tabs__btn-icon"><svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd"/></svg></span>
           Anonimiseren
         </button>
         <button
           className={`tabs__btn ${activeTab === 'files' ? 'tabs__btn--active' : ''}`}
           onClick={() => setActiveTab('files')}
         >
-          <span className="tabs__btn-icon">📂</span>
+          <span className="tabs__btn-icon"><svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/></svg></span>
           Bestanden
         </button>
         <button
           className={`tabs__btn ${activeTab === 'restore' ? 'tabs__btn--active' : ''}`}
           onClick={() => setActiveTab('restore')}
         >
-          <span className="tabs__btn-icon">🔓</span>
+          <span className="tabs__btn-icon"><svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path d="M10 2a5 5 0 00-5 5v2a2 2 0 00-2 2v5a2 2 0 002 2h10a2 2 0 002-2v-5a2 2 0 00-2-2H7V7a3 3 0 015.905-.75 1 1 0 001.937-.5A5.002 5.002 0 0010 2z"/></svg></span>
           De-anonimiseren
         </button>
         <button
           className={`tabs__btn ${activeTab === 'info' ? 'tabs__btn--active' : ''}`}
           onClick={() => setActiveTab('info')}
         >
-          <span className="tabs__btn-icon">ℹ️</span>
+          <span className="tabs__btn-icon"><svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd"/></svg></span>
           Uitleg
         </button>
       </nav>
@@ -399,25 +403,25 @@ export default function App() {
                     Plak je tekst hieronder of sleep een <strong>.txt</strong> bestand in dit veld
                   </p>
                   
-                  {/* Optioneel: Basis sleutelbestand uploaden */}
-                  <div className="anonymizer__base-upload">
+                  {/* Optioneel: Basis omzettingsbestand uploaden */}
+                  <label className="anonymizer__base-upload" style={{ cursor: 'pointer' }}>
                     <span className="anonymizer__base-upload-label">Optioneel:</span>
-                    <label className="btn btn--outline btn--small" style={{ margin: 0 }}>
-                      Laad vorig sleutelbestand (.anon)
+                    <div className="dropzone__file-button" style={{ margin: 0, padding: '0.35rem 0.7rem' }}>
+                      Laad vorig omzettingsbestand (.anon)
                       <input type="file" accept=".anon" style={{ display: 'none' }} onChange={handleBaseFileLoad} />
-                    </label>
+                    </div>
                     {baseFileName && (
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem' }} onClick={(e) => e.preventDefault()}>
                         <span>✅ {baseFileName} ({baseMappings.length} items)</span>
                         <button 
                           className="btn btn--ghost btn--small" 
                           style={{ padding: '0.2rem 0.5rem', color: 'var(--color-error)' }}
-                          onClick={() => { setBaseFileName(null); setBaseMappings([]); }}
+                          onClick={(e) => { e.preventDefault(); setBaseFileName(null); setBaseMappings([]); }}
                           title="Verwijder basisbestand"
                         >✕</button>
                       </div>
                     )}
-                  </div>
+                  </label>
 
                   <DropZone
                     onTextReceived={handleTextInput}
@@ -433,13 +437,13 @@ export default function App() {
                 <div className="anonymizer__panels">
                   {/* Links: Tekst met markeringen */}
                   <div className="glass-panel anonymizer__text-panel">
-                    <div className="glass-panel__title-row">
-                      <h2 className="glass-panel__title">Tekst met markeringen</h2>
-                      <button className="btn btn--ghost btn--small" onClick={handleReset}>
-                        ✕ Opnieuw
-                      </button>
-                    </div>
                     <TextHighlighter
+                      title="Tekst met markeringen"
+                      titleAction={
+                        <button className="btn btn--ghost btn--small" onClick={handleReset}>
+                          <svg viewBox="0 0 20 20" fill="currentColor" width="14" height="14" style={{flexShrink:0}}><path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"/></svg> Opnieuw
+                        </button>
+                      }
                       text={originalText}
                       mappings={mappings}
                       onAddMapping={handleAddMapping}
@@ -459,7 +463,11 @@ export default function App() {
                         data-tooltip={replacementMode === 'realistic' ? 'Schakel naar placeholders (bijv. Jan → [Persoon1])' : 'Schakel naar fictieve namen (bijv. Jan → Sofie)'}
                         aria-label="Toggle replacement mode"
                       >
-                        {replacementMode === 'realistic' ? '🔢' : '🎭'}
+                        {replacementMode === 'realistic' ? (
+                          <svg viewBox="0 0 20 20" fill="currentColor" width="18" height="18"><path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/><path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clipRule="evenodd"/></svg>
+                        ) : (
+                          <svg viewBox="0 0 20 20" fill="currentColor" width="18" height="18"><path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd"/></svg>
+                        )}
                       </button>
                     </div>
                     <ReplacementTable
@@ -508,7 +516,7 @@ export default function App() {
                   >
                     {copied
                       ? '✅ Gekopieerd & Gedownload!'
-                      : '🛡️ Anonimiseer, Kopieer & Download Sleutelbestand'
+                      : '🛡️ Anonimiseer, Kopieer & Download Omzettingsbestand'
                     }
                   </button>
                   {replacementMode === 'placeholder' && hasAnonymized && (
@@ -535,7 +543,7 @@ export default function App() {
           <div className="glass-panel glass-panel--large">
             <h2 className="glass-panel__title">Terugdraaien</h2>
             <p className="glass-panel__subtitle">
-              Upload het <strong>.anon</strong> sleutelbestand en plak de geanonimiseerde tekst — of upload een geanonimiseerd bestand — om deze te herstellen.
+              Upload het <strong>.anon</strong> omzettingsbestand en plak de geanonimiseerde tekst — of upload een geanonimiseerd bestand — om deze te herstellen.
             </p>
             <Suspense fallback={<div className="loading-spinner">Component wordt geladen...</div>}>
               <DeAnonymizer />

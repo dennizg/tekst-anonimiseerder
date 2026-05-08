@@ -82,10 +82,15 @@ function downloadBlob(blob, filename) {
  */
 function stampedName(originalName, suffix = '') {
   const now = new Date();
-  const stamp = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}-${String(now.getHours()).padStart(2,'0')}u${String(now.getMinutes()).padStart(2,'0')}`;
+  const dateStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
   const ext = originalName.includes('.') ? originalName.slice(originalName.lastIndexOf('.')) : '';
   const base = originalName.includes('.') ? originalName.slice(0, originalName.lastIndexOf('.')) : originalName;
-  return `${base}${suffix ? '-' + suffix : ''}-${stamp}${ext}`;
+  
+  let tag = suffix;
+  if (suffix === 'hersteld') tag = 'Ge-DE-anonimiseerd';
+  if (suffix === 'geanonimiseerd') tag = 'Geanonimiseerd';
+  
+  return `${dateStr} ${tag} - ${base}${ext}`;
 }
 
 // ─── CSV ──────────────────────────────────────────────────────────────────────

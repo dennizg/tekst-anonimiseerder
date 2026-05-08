@@ -10,12 +10,12 @@ export default function InfoTab({ onOpenLegalModal }) {
       {/* Introductie */}
       <section className="info-tab__section">
         <h2 className="info-tab__heading">
-          <span className="info-tab__heading-icon">👋</span>
+          <span className="info-tab__heading-icon"><svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clipRule="evenodd"/></svg></span>
           Welkom bij de Tekst Anonimiseerder
         </h2>
         <p className="info-tab__text">
           Deze tool helpt je om <strong>persoonsgevoelige informatie</strong> in teksten te vervangen 
-          door fictieve gegevens. Omdat dit proces <strong>omkeerbaar</strong> is via een gegenereerd sleutelbestand, 
+          door fictieve gegevens. Omdat dit proces <strong>omkeerbaar</strong> is via een gegenereerd omzettingsbestand, 
           creëer je in de formele juridische zin <em>gepseudonimiseerde</em> data in plaats van anonieme data.
         </p>
 
@@ -24,7 +24,7 @@ export default function InfoTab({ onOpenLegalModal }) {
       {/* Hoe werkt het? */}
       <section className="info-tab__section">
         <h2 className="info-tab__heading">
-          <span className="info-tab__heading-icon">⚙️</span>
+          <span className="info-tab__heading-icon"><svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path fillRule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd"/></svg></span>
           Hoe werkt het?
         </h2>
         <div className="info-tab__steps">
@@ -34,7 +34,7 @@ export default function InfoTab({ onOpenLegalModal }) {
               <h3>Tekst invoeren</h3>
               <p>Plak je tekst in het invoerveld of sleep een <code>.txt</code> bestand erin. 
               De tekst wordt direct geanalyseerd. <br/>
-              <em><strong>Tip:</strong> Upload vóór het plakken een bestaand <code>.anon</code> sleutelbestand om eerdere pseudoniemen opnieuw te gebruiken (ideaal voor periodieke notulen).</em></p>
+              <em><strong>Tip:</strong> Upload vóór het plakken een bestaand <code>.anon</code> omzettingsbestand om eerdere pseudoniemen opnieuw te gebruiken (ideaal voor periodieke notulen).</em></p>
             </div>
           </div>
           <div className="info-tab__step">
@@ -50,14 +50,14 @@ export default function InfoTab({ onOpenLegalModal }) {
             <div className="info-tab__step-content">
               <h3>Anonimiseren</h3>
               <p>Klik op de grote knop. De geanonimiseerde tekst wordt gekopieerd naar je klembord 
-              en het <strong>sleutelbestand</strong> (<code>.anon</code>) wordt automatisch gedownload.</p>
+              en het <strong>omzettingsbestand</strong> (<code>.anon</code>) wordt automatisch gedownload.</p>
             </div>
           </div>
           <div className="info-tab__step">
             <div className="info-tab__step-number">4</div>
             <div className="info-tab__step-content">
               <h3>Later terugdraaien</h3>
-              <p>Ga naar het tabblad <em>"Terugdraaien"</em>, upload het sleutelbestand en plak de 
+              <p>Ga naar het tabblad <em>"Terugdraaien"</em>, upload het omzettingsbestand en plak de 
               geanonimiseerde tekst. De originele (persoons)gegevens zijn weer terug gezet; de tekst is ge-de-anonimiseerd.</p>
             </div>
           </div>
@@ -67,7 +67,7 @@ export default function InfoTab({ onOpenLegalModal }) {
       {/* Voorbeeld */}
       <section className="info-tab__section">
         <h2 className="info-tab__heading">
-          <span className="info-tab__heading-icon">📝</span>
+          <span className="info-tab__heading-icon"><svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/></svg></span>
           Voorbeeld
         </h2>
         <div className="info-tab__example">
@@ -133,14 +133,14 @@ export default function InfoTab({ onOpenLegalModal }) {
         </div>
 
         <div className="info-tab__text" style={{ marginTop: '3rem', fontSize: '0.95rem', color: 'var(--color-text-light)', backgroundColor: 'var(--color-bg-alt)', padding: '1rem', borderRadius: '8px', borderLeft: '4px solid var(--color-accent)' }}>
-          <strong>💡 Tip voor terugkerende rapportages:</strong> Heb je volgende maand een nieuw verslag waar <em>Jan de Vries</em> weer in voorkomt? Laad dan vooraf je eerder bewaarde sleutelbestand (.anon) in. In de nieuwe geanonimiseerde tekst zal hij dan automatisch wéér <em>Sofie van Houten</em> heten!
+          <strong>💡 Tip voor terugkerende rapportages:</strong> Heb je volgende maand een nieuw verslag waar <em>Jan de Vries</em> weer in voorkomt? Laad dan vooraf je eerder bewaarde omzettingsbestand (.anon) in. In de nieuwe geanonimiseerde tekst zal hij dan automatisch wéér <em>Sofie van Houten</em> heten!
         </div>
       </section>
 
       {/* Herkend typen */}
       <section className="info-tab__section">
         <h2 className="info-tab__heading">
-          <span className="info-tab__heading-icon">🔍</span>
+          <span className="info-tab__heading-icon"><svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd"/></svg></span>
           Welke gegevens worden herkend?
         </h2>
         <div className="info-tab__types-grid">
@@ -215,7 +215,7 @@ export default function InfoTab({ onOpenLegalModal }) {
       {/* Privacy & Veiligheid */}
       <section className="info-tab__section info-tab__section--highlight">
         <h2 className="info-tab__heading">
-          <span className="info-tab__heading-icon">🔒</span>
+          <span className="info-tab__heading-icon"><svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd"/></svg></span>
           Privacy & Veiligheid
         </h2>
         <div className="info-tab__privacy-points">
@@ -256,7 +256,7 @@ export default function InfoTab({ onOpenLegalModal }) {
       {/* Disclaimers */}
       <section className="info-tab__section info-tab__section--warning">
         <h2 className="info-tab__heading">
-          <span className="info-tab__heading-icon">⚠️</span>
+          <span className="info-tab__heading-icon"><svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd"/></svg></span>
           Belangrijke opmerkingen
         </h2>
         <div className="info-tab__disclaimers">
@@ -270,11 +270,11 @@ export default function InfoTab({ onOpenLegalModal }) {
             </p>
           </div>
           <div className="info-tab__disclaimer">
-            <h4>Het sleutelbestand is niet beveiligd</h4>
+            <h4>Het omzettingsbestand is niet beveiligd</h4>
             <p>
-              Het gedownloade <code>.anon</code> sleutelbestand bevat de omzettingstabel in leesbaar formaat 
+              Het gedownloade <code>.anon</code> omzettingsbestand bevat de omzettingstabel in leesbaar formaat 
               (JSON). Dit bestand is <strong>niet versleuteld of met een wachtwoord beveiligd</strong>. 
-              Bewaar het sleutelbestand daarom op een veilige plek en deel het alleen met personen die 
+              Bewaar het omzettingsbestand daarom op een veilige plek en deel het alleen met personen die 
               de originele gegevens mogen inzien.
             </p>
           </div>

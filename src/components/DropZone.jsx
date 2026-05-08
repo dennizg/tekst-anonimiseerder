@@ -96,6 +96,14 @@ export default function DropZone({
     }
   }
 
+  const fileInputRef = useRef(null);
+
+  function handleZoneClick(e) {
+    if (fileOnly && fileInputRef.current && e.target.tagName !== 'INPUT') {
+      fileInputRef.current.click();
+    }
+  }
+
   return (
     <div
       className={`dropzone ${isDragging ? 'dropzone--dragging' : ''} ${compact ? 'dropzone--compact' : ''} ${fileOnly ? 'dropzone--file-only' : ''}`}
@@ -103,6 +111,7 @@ export default function DropZone({
       onDragLeave={handleDragLeave}
       onDragOver={handleDragOver}
       onDrop={handleDrop}
+      onClick={handleZoneClick}
     >
       {isDragging && (
         <div className="dropzone__overlay">
@@ -124,15 +133,16 @@ export default function DropZone({
               : placeholder
             }
           </div>
-          <label className="dropzone__file-button">
+          <div className="dropzone__file-button">
             Kies bestand
             <input
+              ref={fileInputRef}
               type="file"
               accept={acceptedExtensions.join(',')}
               onChange={handleFileInput}
               style={{ display: 'none' }}
             />
-          </label>
+          </div>
         </div>
       ) : showTextArea ? (
         <textarea

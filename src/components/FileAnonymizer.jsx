@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo, useEffect } from 'react';
+import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import ReplacementTable from './ReplacementTable';
 import TextHighlighter from './TextHighlighter';
 import { detectPII, detectCategory } from '../utils/detector';
@@ -26,10 +26,10 @@ const ACCEPTED_MIME = [
 ];
 
 const FILE_TYPE_LABELS = {
-  docx: { icon: '📝', label: 'Word document', color: '#2b579a' },
-  xlsx: { icon: '📊', label: 'Excel werkblad', color: '#217346' },
-  xls:  { icon: '📊', label: 'Excel werkblad', color: '#217346' },
-  csv:  { icon: '📋', label: 'CSV bestand', color: '#d97706' },
+  docx: { label: 'Word document', color: '#2b579a' },
+  xlsx: { label: 'Excel werkblad', color: '#217346' },
+  xls:  { label: 'Excel werkblad', color: '#217346' },
+  csv:  { label: 'CSV bestand', color: '#d97706' },
 };
 
 function getFileExt(file) {
@@ -58,11 +58,11 @@ export default function FileAnonymizer({ onShowNotification, replacementMode, to
   const [isWriting, setIsWriting] = useState(false);
   const [isDone, setIsDone] = useState(false);
 
-  // Optioneel vorig sleutelbestand
+  // Optioneel vorig omzettingsbestand
   const [baseMappings, setBaseMappings] = useState([]);
   const [baseFileName, setBaseFileName] = useState(null);
 
-  const animatedIcons = useMemo(() => ['📁', '📄', '📊', '📝'], []);
+  const animatedIcons = useMemo(() => ['file', 'doc', 'chart', 'text'], []);
 
   useEffect(() => {
     if (showResults || isProcessing) return;
@@ -103,8 +103,8 @@ export default function FileAnonymizer({ onShowNotification, replacementMode, to
       setError(`Bestandstype niet ondersteund. Gebruik .docx, .xlsx, .xls of .csv.`);
       return;
     }
-    if (incoming.size > 20 * 1024 * 1024) {
-      setError('Bestand is te groot (max 20 MB).');
+    if (incoming.size > 100 * 1024 * 1024) {
+      setError('Bestand is te groot (max 100 MB).');
       return;
     }
 
@@ -184,7 +184,7 @@ export default function FileAnonymizer({ onShowNotification, replacementMode, to
     onShowNotification?.(`"${text}" toegevoegd als ${label}`, 'success');
   }, [mappings, generate, onShowNotification]);
 
-  // ── Vorig sleutelbestand laden ─────────────────────────────────────────────
+  // ── Vorig omzettingsbestand laden ─────────────────────────────────────────────
 
   async function handleBaseFile(e) {
     const f = e.target.files[0];
@@ -239,7 +239,15 @@ export default function FileAnonymizer({ onShowNotification, replacementMode, to
   }, [mappings]);
 
   const ext = getFileExt(file);
-  const fileTypeInfo = FILE_TYPE_LABELS[ext] || { icon: '📄', label: 'Bestand', color: '#6b7280' };
+  const fileTypeInfo = FILE_TYPE_LABELS[ext] || { label: 'Bestand', color: '#6b7280' };
+
+  // Helper for clicking the dropzone
+  const fileInputRef = useRef(null);
+  function handleZoneClick(e) {
+    if (fileInputRef.current && e.target.tagName !== 'INPUT') {
+      fileInputRef.current.click();
+    }
+  }
 
   // ── Render ─────────────────────────────────────────────────────────────────
 
@@ -265,30 +273,31 @@ export default function FileAnonymizer({ onShowNotification, replacementMode, to
               </p>
             </div>
 
-            <div className="anonymizer__base-upload">
+            <label className="anonymizer__base-upload" style={{ cursor: 'pointer' }}>
               <span className="anonymizer__base-upload-label">Optioneel:</span>
-              <label className="btn btn--outline btn--small" style={{ margin: 0 }}>
-                Laad vorig sleutelbestand (.anon)
+              <div className="dropzone__file-button" style={{ margin: 0, padding: '0.35rem 0.7rem' }}>
+                Laad vorig omzettingsbestand (.anon)
                 <input type="file" accept=".anon" style={{ display: 'none' }} onChange={handleBaseFile} />
-              </label>
+              </div>
               {baseFileName && (
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem' }} onClick={(e) => e.preventDefault()}>
                   <span>✅ {baseFileName} ({baseMappings.length} items)</span>
                   <button
                     className="btn btn--ghost btn--small"
                     style={{ padding: '0.2rem 0.5rem', color: 'var(--color-error)' }}
-                    onClick={() => { setBaseFileName(null); setBaseMappings([]); }}
+                    onClick={(e) => { e.preventDefault(); setBaseFileName(null); setBaseMappings([]); }}
                     title="Verwijder basisbestand"
                   >✕</button>
                 </div>
               )}
-            </div>
+            </label>
 
             <div
               className={`file-anonymizer__dropzone ${isDragging ? 'file-anonymizer__dropzone--dragging' : ''} ${isProcessing ? 'file-anonymizer__dropzone--loading' : ''}`}
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}
               onDrop={handleDrop}
+              onClick={handleZoneClick}
             >
               {isProcessing ? (
                 <div className="file-anonymizer__loading">
@@ -297,18 +306,26 @@ export default function FileAnonymizer({ onShowNotification, replacementMode, to
                 </div>
               ) : (
                 <>
-                  <div className="file-anonymizer__dropzone-icon">{animatedIcons[iconIndex]}</div>
+                  <div className="file-anonymizer__dropzone-icon file-anonymizer__dropzone-icon--animated">
+                    <svg viewBox="0 0 20 20" fill="currentColor" width="40" height="40">
+                      {animatedIcons[iconIndex] === 'file' && <path fillRule="evenodd" d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clipRule="evenodd"/>}
+                      {animatedIcons[iconIndex] === 'doc' && <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clipRule="evenodd"/>}
+                      {animatedIcons[iconIndex] === 'chart' && <><path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zm6-4a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zm6-3a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/></>}
+                      {animatedIcons[iconIndex] === 'text' && <><path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clipRule="evenodd"/></>}
+                    </svg>
+                  </div>
                   <p className="file-anonymizer__dropzone-text">Sleep je bestand hierheen of</p>
-                  <label className="btn btn--primary">
+                  <div className="dropzone__file-button" style={{ display: 'inline-block' }}>
                     Kies bestand
                     <input
+                      ref={fileInputRef}
                       type="file"
                       accept={ACCEPTED_EXTENSIONS.join(',')}
                       style={{ display: 'none' }}
                       onChange={handleInputChange}
                     />
-                  </label>
-                  <p className="file-anonymizer__dropzone-hint">.docx · .xlsx · .xls · .csv · max 20 MB</p>
+                  </div>
+                  <p className="file-anonymizer__dropzone-hint">.docx · .xlsx · .xls · .csv · max 100 MB</p>
                 </>
               )}
             </div>
@@ -339,8 +356,10 @@ export default function FileAnonymizer({ onShowNotification, replacementMode, to
           {/* Bestandsinfo balk */}
           <div className="file-anonymizer__file-bar">
             <div className="file-anonymizer__file-info">
-              <span className="file-anonymizer__file-icon" style={{ color: fileTypeInfo.color }}>
-                {fileTypeInfo.icon}
+              <span className="file-anonymizer__file-icon">
+                <svg viewBox="0 0 20 20" fill="currentColor" width="24" height="24" style={{ color: fileTypeInfo.color }}>
+                  <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clipRule="evenodd"/>
+                </svg>
               </span>
               <div>
                 <div className="file-anonymizer__file-name">{file.name}</div>
@@ -348,7 +367,7 @@ export default function FileAnonymizer({ onShowNotification, replacementMode, to
               </div>
             </div>
             <button className="btn btn--ghost btn--small" onClick={handleReset}>
-              ✕ Ander bestand
+              <svg viewBox="0 0 20 20" fill="currentColor" width="14" height="14" style={{flexShrink:0}}><path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"/></svg> Ander bestand
             </button>
           </div>
 
@@ -365,10 +384,8 @@ export default function FileAnonymizer({ onShowNotification, replacementMode, to
           <div className="anonymizer__panels">
             {/* Linker paneel — geëxtraheerde tekst met highlights */}
             <div className="glass-panel anonymizer__text-panel">
-              <h2 className="glass-panel__title">
-                Inhoud van het bestand
-              </h2>
               <TextHighlighter
+                title="Inhoud van het bestand"
                 text={extractedText}
                 mappings={mappings}
                 onAddMapping={handleAddMapping}
@@ -388,7 +405,11 @@ export default function FileAnonymizer({ onShowNotification, replacementMode, to
                   data-tooltip={replacementMode === 'realistic' ? 'Schakel naar placeholders (bijv. Jan → [Persoon1])' : 'Schakel naar fictieve namen (bijv. Jan → Sofie)'}
                   aria-label="Toggle replacement mode"
                 >
-                  {replacementMode === 'realistic' ? '🔢' : '🎭'}
+                  {replacementMode === 'realistic' ? (
+                    <svg viewBox="0 0 20 20" fill="currentColor" width="18" height="18"><path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/><path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clipRule="evenodd"/></svg>
+                  ) : (
+                    <svg viewBox="0 0 20 20" fill="currentColor" width="18" height="18"><path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd"/></svg>
+                  )}
                 </button>
               </div>
               <ReplacementTable
@@ -421,10 +442,10 @@ export default function FileAnonymizer({ onShowNotification, replacementMode, to
                 ? '⏳ Bestand verwerken…'
                 : isDone
                   ? '✅ Opnieuw downloaden'
-                  : '🛡️ Anonimiseer & Download (+ sleutelbestand)'}
+                  : '🛡️ Anonimiseer & Download (+ omzettingsbestand)'}
             </button>
             <p className="anonymizer__actions-hint">
-              Je ontvangt twee bestanden: eerst het sleutelbestand (.anon) en daarna het geanonimiseerde document.
+              Je ontvangt twee bestanden: eerst het omzettingsbestand (.anon) en daarna het geanonimiseerde document.
             </p>
             {replacementMode === 'placeholder' && isDone && (
               <div className="ai-tip-banner">
