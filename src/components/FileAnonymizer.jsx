@@ -211,11 +211,25 @@ export default function FileAnonymizer({ onShowNotification, replacementMode, to
 
   // ── Telmethode voor de tabel (voor bestanden: toon altijd 1 per item) ─────
 
-  const fakeCounts = useMemo(() => {
+  const realCounts = useMemo(() => {
+    if (!extractedText || mappings.length === 0) return {};
     const c = {};
-    for (const m of mappings) c[m.original] = 1;
+    const textLower = extractedText.toLowerCase();
+    
+    for (const m of mappings) {
+      if (!m.original) continue;
+      const termLower = m.original.toLowerCase();
+      let count = 0;
+      let pos = textLower.indexOf(termLower);
+      
+      while (pos !== -1) {
+        count++;
+        pos = textLower.indexOf(termLower, pos + termLower.length);
+      }
+      c[m.original] = count;
+    }
     return c;
-  }, [mappings]);
+  }, [extractedText, mappings]);
 
   const ext = getFileExt(file);
   const fileTypeInfo = FILE_TYPE_LABELS[ext] || { label: 'Bestand', color: '#6b7280' };
@@ -364,7 +378,7 @@ export default function FileAnonymizer({ onShowNotification, replacementMode, to
               </div>
               <ReplacementTable
                 mappings={mappings}
-                counts={fakeCounts}
+                counts={realCounts}
                 totalReplacements={mappings.length}
                 onRemoveMapping={handleRemoveMapping}
                 onUpdateMapping={handleUpdateMapping}

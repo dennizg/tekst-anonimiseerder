@@ -4,7 +4,7 @@
 [![Vite](https://img.shields.io/badge/Vite-8.0-purple.svg)](https://vitejs.dev/)
 [![Security](https://img.shields.io/badge/Security-A%2B-success.svg)](#)
 [![Privacy First](https://img.shields.io/badge/Privacy-100%25%20Local-success.svg)](#)
-[![Version](https://img.shields.io/badge/version-1.3.0-informational.svg)](#)
+[![Version](https://img.shields.io/badge/version-1.3.1-informational.svg)](#)
 
 Een veilige, bliksemsnelle en betrouwbare webapplicatie (SPA) ontworpen om teksten, notulen en persoonsgegevens (PII) lokaal en **omkeerbaar te pseudonimiseren** zonder dat er ooit data de browser verlaat. Alle verwerking en analyse vindt voor 100% lokaal in het werkgeheugen plaats.
 
@@ -23,7 +23,8 @@ Een veilige, bliksemsnelle en betrouwbare webapplicatie (SPA) ontworpen om tekst
 - **Terugkerende Onderwerpen & Workflow Pariteit:** Ondersteuning voor het 'stacken' of uploaden van voorgaande `.anon` bestanden direct in zowel het *Bestanden* als het *Anonimiseren* tabblad. Ideaal voor periodieke besprekingen waarbij dezelfde personen elke iteratie exact hetzelfde unieke pseudoniem moeten houden.
 - **Geavanceerde Deduplicatie (1x Uniek):** Nieuwe weergavemodus die de ruwe tekst filtert en elk woord slechts één keer toont. Ideaal voor het razendsnel scannen op vergeten PII zonder afgeleid te worden door massale herhalingen.
 - **Minimalistische Iconografie:** Introductie van strakke, monochrome SVG-iconen (zoals een dynamische muisaanwijzer) en consistente status-banners voor een rustiger, professioneel en afleidingsvrij design.
-- **State-of-the-Art UI & Pixel-Perfect Design:** Strak vormgegeven met *Glassmorphism*, in/uitklapbare tabbladen, geanimeerde drag-and-drop zones, en consistente hover- en focus states over alle interactieve elementen. Met extreme precisie uitgelijnde data-tabellen via vastgezette grid-kolommen, gecentreerde tooltips, logisch verticaal opgebouwde de-anonimiserings stappen, en een adembenemend **Light / Dark Mode thema switch**.
+- **State-of-the-Art UI & Pixel-Perfect Design:** Strak vormgegeven met *Glassmorphism*, in/uitklapbare tabbladen, geanimeerde drag-and-drop zones, en consistente hover- en focus states over alle interactieve elementen. Met extreme precisie uitgelijnde data-tabellen via vastgezette grid-kolommen, **gestandaardiseerde "Solid-Opaque" tooltips**, logisch verticaal opgebouwde de-anonimiserings stappen, en een adembenemend **Light / Dark Mode thema switch**.
+- **Real-time Analyse & Statistieken:** Direct inzicht in de impact van anonimisering via live frequentie-tellingen in de omzettingstabel. Bij document-uploads (Word/Excel/CSV) wordt elke gevonden term nu exact geteld over het hele document, wat helpt bij het valideren van grootschalige transcripties.
 
 ## 🔎 Wat wordt er feilloos herkend?
 

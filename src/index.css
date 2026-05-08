@@ -60,7 +60,7 @@
   --color-bg-glass: rgba(255, 255, 255, 0.9); /* Opaque white for the main glass panels */
   --color-bg-glass-hover: rgba(255, 255, 255, 1);
   --color-bg-glass-strong: #ffffff;
-  --color-bg-tooltip: #ffffff; /* Solid light background for tooltips */
+  --color-bg-tooltip: #ffffff; /* Solid white background for tooltips */
   --color-border-glass: rgba(0, 0, 0, 0.08);
   --color-border-glass-hover: rgba(0, 0, 0, 0.15);
   
@@ -283,20 +283,21 @@ body {
   top: calc(100% + 10px);
   left: 50%;
   transform: translateX(-50%) translateY(5px);
-  background: var(--color-bg-tooltip);
-  color: var(--color-text-primary);
-  padding: 0.4rem 0.8rem;
+  background: #ffffff !important;
+  color: #0f172a !important;
+  padding: 0.5rem 0.9rem;
   border-radius: var(--radius-sm);
-  font-size: 0.8rem;
-  font-weight: 500;
+  font-size: 0.82rem;
+  font-weight: 600;
   white-space: nowrap;
-  opacity: 0;
-  visibility: hidden;
-  transition: all var(--transition-fast);
-  border: 1px solid var(--color-border-glass);
-  box-shadow: var(--glass-shadow);
-  z-index: 50;
+  display: none;
+  border: 1px solid #cbd5e1 !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2) !important;
+  z-index: 10000;
   pointer-events: none;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  transform: translateX(-50%) translateY(5px);
 }
 
 .mode-toggle::after {
@@ -306,14 +307,12 @@ body {
 }
 
 .theme-toggle:hover::after {
-  opacity: 1;
-  visibility: visible;
+  display: block;
   transform: translateX(-50%) translateY(0);
 }
 
 .mode-toggle:hover::after {
-  opacity: 1;
-  visibility: visible;
+  display: block;
   transform: translateX(0) translateY(0);
 }
 
@@ -410,6 +409,7 @@ body {
   padding: 1.5rem;
   box-shadow: var(--glass-shadow);
   transition: box-shadow var(--transition-normal);
+  isolation: isolate;
 }
 
 .glass-panel--large {
@@ -725,8 +725,11 @@ body {
   display: flex;
   flex-direction: column;
   flex: 1;
-  min-height: 0;
+  width: 100%;
+  min-width: 0;
+  min-height: 0; /* Essentieel voor intern scrollen! */
   border-radius: var(--radius-md);
+  position: relative;
 }
 
 .text-highlighter--empty {
@@ -844,31 +847,29 @@ body {
   position: absolute;
   top: calc(100% + 10px);
   left: 50%;
-  right: auto;
-  transform: translateX(-50%) translateY(5px);
-  background: var(--color-bg-tooltip);
-  color: var(--color-text-primary);
-  padding: 0.5rem 0.85rem;
+  background: #ffffff !important;
+  color: #0f172a !important;
+  padding: 0.65rem 1.1rem;
   border-radius: var(--radius-sm);
-  font-size: 0.78rem;
-  font-weight: 500;
+  font-size: 0.82rem;
+  font-weight: 600;
   white-space: normal;
   width: max-content;
-  max-width: 260px;
-  line-height: 1.4;
+  max-width: 280px;
+  line-height: 1.6;
   text-align: left;
-  opacity: 0;
-  visibility: hidden;
-  transition: all var(--transition-fast);
-  border: 1px solid var(--color-border-glass);
-  box-shadow: var(--glass-shadow);
-  z-index: 50;
+  display: none;
+  border: 1px solid #cbd5e1 !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2) !important;
+  z-index: 10000;
   pointer-events: none;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  transform: translateX(-50%) translateY(5px);
 }
 
 .unique-toggle:hover::after {
-  opacity: 1;
-  visibility: visible;
+  display: block;
   transform: translateX(-50%) translateY(0);
 }
 
@@ -914,6 +915,7 @@ body {
 
 .text-highlighter__content {
   flex: 1;
+  min-height: 0; /* Essentieel voor intern scrollen! */
   overflow-y: auto;
   position: relative;
   font-size: 0.92rem;
@@ -955,10 +957,11 @@ body {
 .text-highlighter__search-bar {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 0.5rem 0;
+  gap: 0.75rem;
+  padding: 0.85rem 0.5rem 0.25rem;
   margin-top: 0.5rem;
   flex-shrink: 0;
+  width: 100%;
   
   /* Styling (Exact hetzelfde als panel background) */
   background: transparent;
@@ -973,23 +976,31 @@ body {
 
 .search-icon {
   font-size: 1.1rem;
-  opacity: 0.7;
+  opacity: 0.6;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
 }
 
 .search-input {
-  flex: 1;
-  background: transparent;
-  border: none;
+  flex: 1 !important;
+  width: 100% !important;
+  min-width: 0 !important; /* Essentieel voor flex-shrink/grow in sommige browsers */
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
   color: var(--color-text-primary);
   font-family: var(--font-family);
-  font-size: 0.9rem;
-  padding: 0.25rem;
-  outline: none;
+  font-size: 0.92rem;
+  padding: 0.5rem 0;
+  outline: none !important;
+  transition: all var(--transition-fast);
 }
 
 .search-input::placeholder {
   color: var(--color-text-muted);
   font-style: italic;
+  opacity: 0.8;
 }
 
 .search-actions {
