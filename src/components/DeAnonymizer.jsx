@@ -141,21 +141,19 @@ export default function DeAnonymizer() {
           />
 
           {/* Bestand-uploaden */}
-          <label className="de-anonymizer__file-upload" style={{ cursor: 'pointer' }}>
-            <span className="de-anonymizer__file-upload-label">Of herstel een bestand:</span>
-            <div className="dropzone__file-button" style={{ margin: 0, padding: '0.35rem 0.7rem' }}>
-              📂 Kies .docx / .xlsx / .csv
-              <input
-                type="file"
-                accept={DOC_EXTENSIONS.join(',')}
-                style={{ display: 'none' }}
-                onChange={(e) => { if (e.target.files[0]) handleDocFile(e.target.files[0]); e.target.value = ''; }}
-              />
-            </div>
-            {docFile && (
-              <span style={{ fontSize: '0.9rem', opacity: 0.8 }}>📄 {docFile.name}</span>
-            )}
-          </label>
+          <div className="de-anonymizer__file-upload-section" style={{ marginTop: '1.25rem' }}>
+            <span className="de-anonymizer__file-upload-label" style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.85rem', color: 'var(--color-text-muted)', fontWeight: 500 }}>
+              Of herstel een bestand (.docx, .xlsx, .csv):
+            </span>
+            <DropZone
+              onFileReceived={handleDocFile}
+              acceptedExtensions={DOC_EXTENSIONS}
+              placeholder="Sleep het geanonimiseerde bestand hierheen of klik om te kiezen…"
+              fileOnly={true}
+              compact={true}
+            />
+          </div>
+
         </div>
       </div>
 

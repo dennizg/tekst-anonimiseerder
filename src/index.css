@@ -522,8 +522,7 @@ body {
   color: var(--color-text-muted);
 }
 
-.anonymizer__base-upload:hover,
-.de-anonymizer__file-upload:hover {
+.anonymizer__base-upload:hover {
   border-color: var(--color-accent);
   box-shadow: 0 0 0 3px var(--color-accent-glow);
   background: rgba(99, 102, 241, 0.06);
