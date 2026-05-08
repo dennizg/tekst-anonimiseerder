@@ -543,7 +543,7 @@ body {
   position: absolute;
   inset: 0;
   background: rgba(99, 102, 241, 0.15);
-  border: 2px dashed var(--color-accent);
+  border: 2px solid var(--color-accent);
   border-radius: var(--radius-md);
   display: flex;
   flex-direction: column;
@@ -630,7 +630,7 @@ body {
   min-height: 280px;
   padding: 1rem;
   background: var(--color-bg-surface);
-  border: 1px dashed var(--color-border-glass);
+  border: 1px solid var(--color-border-glass);
   border-radius: var(--radius-md);
   color: var(--color-text-primary);
   font-family: var(--font-family);
@@ -638,14 +638,13 @@ body {
   line-height: 1.7;
   resize: vertical;
   outline: none;
-  transition: border-color var(--transition-normal), box-shadow var(--transition-normal);
+  transition: all var(--transition-normal);
 }
 
 .dropzone__textarea:hover,
 .dropzone__textarea:focus {
   border-color: var(--color-accent);
   box-shadow: 0 0 0 3px var(--color-accent-glow);
-  border-style: solid;
 }
 
 .dropzone__textarea::placeholder {
@@ -659,7 +658,7 @@ body {
 
 /* File-only dropzone */
 .dropzone--file-only {
-  border: 1px dashed var(--color-border-glass);
+  border: 1px solid var(--color-border-glass);
   border-radius: var(--radius-md);
   padding: 1.25rem;
   background: var(--color-bg-surface);
@@ -669,15 +668,16 @@ body {
 
 .dropzone--file-only:hover {
   border-color: var(--color-accent);
-  border-style: solid;
   box-shadow: 0 0 0 3px var(--color-accent-glow);
 }
 
 .dropzone__file-prompt {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
+  justify-content: center;
+  text-align: center;
+  gap: 0.75rem;
 }
 
 .dropzone__file-icon {
@@ -963,7 +963,7 @@ body {
   /* Styling (Exact hetzelfde als panel background) */
   background: transparent;
   border: none;
-  border-top: 1px dashed var(--color-border-glass);
+  border-top: 1px solid var(--color-border-glass);
   border-radius: 0;
   
   /* Bottom position */
@@ -1240,7 +1240,7 @@ body {
 
 /* New Row */
 .replacement-table__row--new {
-  border-top: 1px dashed var(--color-border-glass);
+  border-top: 1px solid var(--color-border-glass);
   margin-top: 0.25rem;
   padding-top: 0.75rem;
 }
@@ -1249,7 +1249,7 @@ body {
   width: 100%;
   padding: 6px 10px;
   background: var(--color-bg-surface);
-  border: 1px dashed var(--color-border-glass-hover);
+  border: 1px solid var(--color-border-glass-hover);
   border-radius: var(--radius-sm);
   color: var(--color-text-primary);
   font-family: var(--font-family);
@@ -1301,7 +1301,7 @@ body {
   font-size: 0.84rem;
   cursor: pointer;
   transition: all var(--transition-fast);
-  border-top: 1px dashed transparent;
+  border-top: 1px solid transparent;
 }
 
 .replacement-table__add-row:hover {
@@ -1316,7 +1316,7 @@ body {
   justify-content: center;
   width: 22px;
   height: 22px;
-  border: 1px dashed currentColor;
+  border: 1px solid currentColor;
   border-radius: 50%;
   font-size: 0.9rem;
   font-weight: 300;
@@ -1406,7 +1406,7 @@ body {
 .de-anonymizer__inputs {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 3.5rem;
+  gap: 2rem;
   margin-bottom: 2rem;
 }
 
@@ -2125,7 +2125,7 @@ body {
 /* Dropzone */
 .file-anonymizer__dropzone {
   margin-top: 1.75rem;
-  border: 2px dashed var(--color-border-glass);
+  border: 1px solid var(--color-border-glass);
   border-radius: var(--radius-lg);
   padding: 3rem 2rem;
   text-align: center;

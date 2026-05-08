@@ -1,6 +1,7 @@
 import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import ReplacementTable from './ReplacementTable';
 import TextHighlighter from './TextHighlighter';
+import DropZone from './DropZone';
 import { detectPII, detectCategory } from '../utils/detector';
 import { generateReplacement, generatePlaceholder, resetGenerator, registerUsedReplacements } from '../utils/generator';
 import { exportMappingFile, importMappingFile } from '../utils/fileHandler';
@@ -44,8 +45,6 @@ function isAcceptedFile(file) {
 export default function FileAnonymizer({ onShowNotification, replacementMode, toggleReplacementMode }) {
   // Stap 1 — bestand
   const [file, setFile] = useState(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [iconIndex, setIconIndex] = useState(0);
 
   // Stap 2 — detectie, tekst en tabel
   const [mappings, setMappings] = useState([]);
@@ -61,16 +60,6 @@ export default function FileAnonymizer({ onShowNotification, replacementMode, to
   // Optioneel vorig omzettingsbestand
   const [baseMappings, setBaseMappings] = useState([]);
   const [baseFileName, setBaseFileName] = useState(null);
-
-  const animatedIcons = useMemo(() => ['file', 'doc', 'chart', 'text'], []);
-
-  useEffect(() => {
-    if (showResults || isProcessing) return;
-    const interval = setInterval(() => {
-      setIconIndex((prev) => (prev + 1) % animatedIcons.length);
-    }, 2000);
-    return () => clearInterval(interval);
-  }, [showResults, isProcessing, animatedIcons]);
 
   // Helper: gebruik de juiste generator op basis van de gekozen modus
   const generate = useCallback((original, category) => {
@@ -149,18 +138,8 @@ export default function FileAnonymizer({ onShowNotification, replacementMode, to
 
   // ── Drag & Drop ────────────────────────────────────────────────────────────
 
-  function handleDragOver(e) { e.preventDefault(); setIsDragging(true); }
-  function handleDragLeave() { setIsDragging(false); }
-  function handleDrop(e) {
-    e.preventDefault();
-    setIsDragging(false);
-    const dropped = e.dataTransfer.files[0];
-    if (dropped) handleFile(dropped);
-  }
-  function handleInputChange(e) {
-    const selected = e.target.files[0];
-    if (selected) handleFile(selected);
-    e.target.value = '';
+  function handleDrop(file) {
+    if (file) handleFile(file);
   }
 
   // ── Tabel handlers ────────────────────────────────────────────────────────
@@ -241,13 +220,6 @@ export default function FileAnonymizer({ onShowNotification, replacementMode, to
   const ext = getFileExt(file);
   const fileTypeInfo = FILE_TYPE_LABELS[ext] || { label: 'Bestand', color: '#6b7280' };
 
-  // Helper for clicking the dropzone
-  const fileInputRef = useRef(null);
-  function handleZoneClick(e) {
-    if (fileInputRef.current && e.target.tagName !== 'INPUT') {
-      fileInputRef.current.click();
-    }
-  }
 
   // ── Render ─────────────────────────────────────────────────────────────────
 
@@ -292,43 +264,21 @@ export default function FileAnonymizer({ onShowNotification, replacementMode, to
               )}
             </label>
 
-            <div
-              className={`file-anonymizer__dropzone ${isDragging ? 'file-anonymizer__dropzone--dragging' : ''} ${isProcessing ? 'file-anonymizer__dropzone--loading' : ''}`}
-              onDragOver={handleDragOver}
-              onDragLeave={handleDragLeave}
-              onDrop={handleDrop}
-              onClick={handleZoneClick}
+            <DropZone
+              onFileReceived={handleDrop}
+              acceptedExtensions={ACCEPTED_EXTENSIONS}
+              fileOnly={true}
+              subtitle="Sleep je bestand hierheen of"
+              fileButtonLabel="Kies bestand"
+              hint=".docx · .xlsx · .xls · .csv · max 100 MB"
             >
-              {isProcessing ? (
+              {isProcessing && (
                 <div className="file-anonymizer__loading">
                   <div className="file-anonymizer__spinner" />
                   <p>Bestand analyseren…</p>
                 </div>
-              ) : (
-                <>
-                  <div className="file-anonymizer__dropzone-icon file-anonymizer__dropzone-icon--animated">
-                    <svg viewBox="0 0 20 20" fill="currentColor" width="40" height="40">
-                      {animatedIcons[iconIndex] === 'file' && <path fillRule="evenodd" d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clipRule="evenodd"/>}
-                      {animatedIcons[iconIndex] === 'doc' && <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clipRule="evenodd"/>}
-                      {animatedIcons[iconIndex] === 'chart' && <><path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zm6-4a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zm6-3a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/></>}
-                      {animatedIcons[iconIndex] === 'text' && <><path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clipRule="evenodd"/></>}
-                    </svg>
-                  </div>
-                  <p className="file-anonymizer__dropzone-text">Sleep je bestand hierheen of</p>
-                  <div className="dropzone__file-button" style={{ display: 'inline-block' }}>
-                    Kies bestand
-                    <input
-                      ref={fileInputRef}
-                      type="file"
-                      accept={ACCEPTED_EXTENSIONS.join(',')}
-                      style={{ display: 'none' }}
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                  <p className="file-anonymizer__dropzone-hint">.docx · .xlsx · .xls · .csv · max 100 MB</p>
-                </>
               )}
-            </div>
+            </DropZone>
 
             {error === 'DOC_ERROR' ? (
               <div className="de-anonymizer__error" style={{ display: 'block', lineHeight: 1.5, marginTop: '1.75rem' }}>

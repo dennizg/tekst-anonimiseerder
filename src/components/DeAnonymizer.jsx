@@ -112,49 +112,58 @@ export default function DeAnonymizer() {
             <span className="de-anonymizer__step-number">1</span>
             Upload het omzettingsbestand
           </h3>
-          <DropZone
-            onFileReceived={handleMappingFile}
-            acceptedExtensions={['.anon', '.json']}
-            placeholder="Sleep je .anon bestand hierheen of klik om te kiezen…"
-            fileOnly={true}
-            compact={true}
-          />
-          {mappings && (
-            <div className="de-anonymizer__file-info">
-              ✅ <strong>{mappingFileName}</strong> — {mappings.length} omzettingen gevonden
+          
+          <label className="anonymizer__base-upload" style={{ cursor: 'pointer', marginBottom: '1rem' }}>
+            <span className="anonymizer__base-upload-label">Selecteer:</span>
+            <div className="dropzone__file-button" style={{ margin: 0, padding: '0.35rem 0.7rem' }}>
+              Laad omzettingsbestand (.anon)
+              <input 
+                type="file" 
+                accept=".anon,.json" 
+                style={{ display: 'none' }} 
+                onChange={(e) => { if (e.target.files[0]) handleMappingFile(e.target.files[0]); e.target.value = ''; }} 
+              />
             </div>
-          )}
+            {mappings && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem' }}>
+                <span>✅ {mappingFileName} ({mappings.length} items)</span>
+              </div>
+            )}
+          </label>
         </div>
 
         {/* Stap 2: Tekst OF bestand */}
         <div className="de-anonymizer__section">
           <h3 className="de-anonymizer__section-title">
             <span className="de-anonymizer__step-number">2</span>
-            Plak de tekst of upload een bestand
+            Plak de tekst of herstel een bestand
           </h3>
 
-          {/* Tekst-invoer */}
-          <DropZone
-            onTextReceived={handleTextReceived}
-            placeholder="Plak hier de geanonimiseerde tekst…"
-            compact={true}
-          />
-
-          {/* Bestand-uploaden */}
-          <div className="de-anonymizer__file-upload-section" style={{ marginTop: '1.25rem' }}>
-            <span className="de-anonymizer__file-upload-label" style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.85rem', color: 'var(--color-text-muted)', fontWeight: 500 }}>
-              Of herstel een bestand (.docx, .xlsx, .csv):
-            </span>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+            {/* Tekst-invoer */}
             <DropZone
-              onFileReceived={handleDocFile}
-              acceptedExtensions={DOC_EXTENSIONS}
-              placeholder="Sleep het geanonimiseerde bestand hierheen of klik om te kiezen…"
-              fileOnly={true}
+              onTextReceived={handleTextReceived}
+              placeholder="Plak hier de geanonimiseerde tekst…"
               compact={true}
             />
-          </div>
 
+            {/* Bestand-uploaden */}
+            <div className="de-anonymizer__file-restore-area">
+              <span style={{ display: 'block', marginBottom: '0.75rem', fontSize: '0.85rem', color: 'var(--color-text-muted)', fontWeight: 500 }}>
+                Of herstel een document:
+              </span>
+              <DropZone
+                onFileReceived={handleDocFile}
+                acceptedExtensions={DOC_EXTENSIONS}
+                fileOnly={true}
+                subtitle="Sleep je bestand hierheen of"
+                fileButtonLabel="Kies bestand"
+                hint=".docx · .xlsx · .xls · .csv · max 100 MB"
+              />
+            </div>
+          </div>
         </div>
+
       </div>
 
       {/* Foutmelding */}
