@@ -13,7 +13,7 @@ import { detectPII, detectCategory } from './utils/detector';
 import { generateReplacement, generatePlaceholder, resetGenerator, registerUsedReplacements } from './utils/generator';
 import { exportMappingFile, applyMappings, copyToClipboard, readTextFile, importMappingFile, buildWordBoundaryRegex } from './utils/fileHandler';
 import packageJson from '../package.json';
-import logoUrl from './assets/logo.png';
+import logoUrl from './assets/logo.webp';
 import './index.css';
 
 export default function App() {
