@@ -35,10 +35,12 @@ function PrivacyPolicy() {
         <strong>Geen servers of databases:</strong> Wij hebben geen servers die jouw bestanden, teksten of patronen opslaan.
       </p>
 
-      <h3>3. Cookies & Tracking</h3>
+      <h3>3. Cookies &amp; Tracking</h3>
       <p>
-        Wij maken <strong>geen</strong> gebruik van tracking-cookies, analyse-software (zoals Google Analytics), 
-        of advertentienetwerken. De website verzamelt geen gegevens over jouw bezoekgedrag.
+        Wij maken <strong>geen</strong> gebruik van cookies, tracking-beacons, analyse-software, 
+        of advertentienetwerken. Er worden geen individuele gebruikers gevolgd en je browser 
+        maakt vanuit deze applicatie <strong>nul externe verbindingen</strong>: er gaat niets 
+        van jouw teksten, patronen of bestanden naar een server — waar dan ook.
       </p>
 
       <h3>4. AVG / GDPR</h3>

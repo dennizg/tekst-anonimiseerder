@@ -109,8 +109,35 @@ export function readTextFile(file) {
 }
 
 /**
+ * Controleert of een karakter een letter is (inclusief Unicode/diakritische tekens).
+ * Wordt gebruikt om woordgrenzen te bepalen bij vervangingen.
+ */
+export function isLetterChar(ch) {
+  if (!ch) return false;
+  return /\p{L}/u.test(ch);
+}
+
+/**
+ * Escaped speciale regex-tekens in een string.
+ */
+function escapeRegex(str) {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+/**
+ * Bouwt een regex die een zoekterm alleen matcht als er geen letters
+ * direct voor of na staan. Leestekens, spaties, regeleindes etc. zijn wel OK.
+ */
+export function buildWordBoundaryRegex(searchTerm) {
+  const escaped = escapeRegex(searchTerm);
+  // Gebruik lookbehind/lookahead: match alleen als er geen Unicode-letter aangrenzend is
+  return new RegExp(`(?<!\\p{L})${escaped}(?!\\p{L})`, 'gu');
+}
+
+/**
  * Past alle mappings toe op een tekst (vervang origineel met vervanging).
  * Sorteert op lengte (langste eerst) om deelvervangingen te voorkomen.
+ * Vervangt alleen hele woorden: "Sam" wordt niet vervangen in "samen".
  */
 export function applyMappings(text, mappings, reverse = false) {
   if (!mappings || mappings.length === 0) return text;
@@ -129,10 +156,10 @@ export function applyMappings(text, mappings, reverse = false) {
     
     if (!searchTerm) continue;
 
-    // Vervang alle voorkomens veilig zonder infinite loops.
-    // We gebruiken split() en join() in plaats van een while-loop met replace()
-    // omdat een while-loop vastloopt als de searchTerm onderdeel is van de replaceTerm.
-    result = result.split(searchTerm).join(replaceTerm);
+    // Vervang alleen als de zoekterm niet aan andere letters vastgeplakt zit.
+    // Leestekens (komma, punt, etc.), spaties en regeleindes worden wel als grens gezien.
+    const regex = buildWordBoundaryRegex(searchTerm);
+    result = result.replace(regex, replaceTerm);
   }
   
   return result;

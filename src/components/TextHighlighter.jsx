@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect, useRef, useCallback } from 'react';
+import { isLetterChar } from '../utils/fileHandler';
 
 const DEFAULT_COLOR = { bg: 'rgba(59, 130, 246, 0.15)', border: 'rgba(59, 130, 246, 0.4)' };
 const SEARCH_COLOR = { bg: 'rgba(234, 179, 8, 0.3)', border: 'rgba(234, 179, 8, 0.6)' };
@@ -53,6 +54,13 @@ export default function TextHighlighter({ text, mappings, onAddMapping, title, t
 
         const substr = text.substring(currentIndex, currentIndex + mapping.original.length);
         if (substr.toLowerCase() === mapping.original.toLowerCase()) {
+          // Woordgrens-check: geen letter direct vóór of ná de match
+          const charBefore = currentIndex > 0 ? text[currentIndex - 1] : '';
+          const charAfter = text[currentIndex + mapping.original.length] || '';
+          if (isLetterChar(charBefore) || isLetterChar(charAfter)) {
+            // Dit is onderdeel van een groter woord (bijv. "Sam" in "samen") — overslaan
+            continue;
+          }
           newSegments.push({
             text: substr,
             isMatch: true,
@@ -145,7 +153,8 @@ export default function TextHighlighter({ text, mappings, onAddMapping, title, t
       
       return () => clearTimeout(timerId); // Wis de timer als de gebruiker verder typt
     }
-  }, [searchTerm, segments, processText]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchTerm, processText]);
 
   if (!text) {
     return (

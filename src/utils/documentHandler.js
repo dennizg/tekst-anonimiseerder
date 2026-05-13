@@ -13,6 +13,9 @@
  * Alle verwerking vindt lokaal in de browser plaats. Geen server, geen externe calls.
  */
 
+import { buildWordBoundaryRegex } from './fileHandler';
+
+
 // ─── Hulpfuncties ─────────────────────────────────────────────────────────────
 
 /**
@@ -57,7 +60,8 @@ function applyMappingsToText(text, mappings, reverse = false) {
     const from = reverse ? m.replacement : m.original;
     const to   = reverse ? m.original   : m.replacement;
     if (!from) continue;
-    result = result.split(from).join(to);
+    const regex = buildWordBoundaryRegex(from);
+    result = result.replace(regex, to);
   }
   return result;
 }
@@ -217,7 +221,8 @@ async function applyMappingsToDOCXXml(xmlString, mappings, reverse) {
 
       // Combineer de betrokken runs en vervang
       const combinedText = textNodes.slice(startIdx, endIdx + 1).map(n => n.textContent).join('');
-      const replacedText = combinedText.split(from).join(to);
+      const regex = buildWordBoundaryRegex(from);
+      const replacedText = combinedText.replace(regex, to);
 
       // Schrijf naar de EERSTE betrokken <w:t>, maar strip bold om
       // onbedoelde opmaak-overerving te voorkomen

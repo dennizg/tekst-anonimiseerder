@@ -11,7 +11,7 @@ const BackgroundParticles = lazy(() => import('./components/BackgroundParticles'
 
 import { detectPII, detectCategory } from './utils/detector';
 import { generateReplacement, generatePlaceholder, resetGenerator, registerUsedReplacements } from './utils/generator';
-import { exportMappingFile, applyMappings, copyToClipboard, readTextFile, importMappingFile } from './utils/fileHandler';
+import { exportMappingFile, applyMappings, copyToClipboard, readTextFile, importMappingFile, buildWordBoundaryRegex } from './utils/fileHandler';
 import packageJson from '../package.json';
 import logoUrl from './assets/logo.png';
 import './index.css';
@@ -199,6 +199,16 @@ export default function App() {
       return;
     }
 
+    // Check of de tekst als zelfstandig woord voorkomt in de originele tekst
+    if (originalText) {
+      const regex = buildWordBoundaryRegex(text);
+      const matches = originalText.match(regex);
+      if (!matches || matches.length === 0) {
+        showNotification(`"${text}" komt niet als zelfstandig woord voor in de tekst.`, 'info');
+        return;
+      }
+    }
+
     // Detecteer het type
     const { category, label } = detectCategory(text);
     
@@ -214,7 +224,7 @@ export default function App() {
 
     setMappings(prev => [...prev, newMapping]);
     showNotification(`"${text}" toegevoegd als ${label}`, 'success');
-  }, [mappings, generate]);
+  }, [mappings, generate, originalText]);
 
   /**
    * Anonimiseert de tekst, kopieert naar klembord en downloadt het .anon bestand.
@@ -267,25 +277,16 @@ export default function App() {
     resetGenerator();
   }
 
-  // Bereken hoe vaak elke mapping voorkomt in de tekst (zwaar geoptimaliseerd om crashen te voorkomen)
+  // Bereken hoe vaak elke mapping voorkomt in de tekst (met woordgrens-check)
   const mappingCounts = useMemo(() => {
     if (!originalText || !mappings || mappings.length === 0) return {};
     const counts = {};
     
     for (const mapping of mappings) {
       if (!mapping.original) continue;
-      let count = 0;
-      let startIndex = 0;
-      
-      while (true) {
-        const index = originalText.indexOf(mapping.original, startIndex);
-        if (index === -1) break;
-        
-        count++;
-        // Spring direct over het gevonden woord heen, voorkomt dubbeltellingen en CPU overbelasting
-        startIndex = index + mapping.original.length;
-      }
-      counts[mapping.original] = count;
+      const regex = buildWordBoundaryRegex(mapping.original);
+      const matches = originalText.match(regex);
+      counts[mapping.original] = matches ? matches.length : 0;
     }
     
     return counts;

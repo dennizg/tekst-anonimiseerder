@@ -4,75 +4,72 @@
 [![Vite](https://img.shields.io/badge/Vite-8.0-purple.svg)](https://vitejs.dev/)
 [![Security](https://img.shields.io/badge/Security-A%2B-success.svg)](#)
 [![Privacy First](https://img.shields.io/badge/Privacy-100%25%20Local-success.svg)](#)
-[![Version](https://img.shields.io/badge/version-1.3.1-informational.svg)](#)
+[![Version](https://img.shields.io/badge/version-1.3.2-informational.svg)](#)
 
-Een veilige, bliksemsnelle en betrouwbare webapplicatie (SPA) ontworpen om teksten, notulen en persoonsgegevens (PII) lokaal en **omkeerbaar te pseudonimiseren** zonder dat er ooit data de browser verlaat. Alle verwerking en analyse vindt voor 100% lokaal in het werkgeheugen plaats.
-
-![Schermafbeelding Webapp](https://img.shields.io/badge/Screenshot-App-blue?style=for-the-badge) <!-- Optional screenshot placeholder -->
+Een webapplicatie (SPA) waarmee teksten, notulen en persoonsgegevens (PII) lokaal en **omkeerbaar gepseudonimiseerd** kunnen worden, zonder dat er data de browser verlaat. Alle verwerking vindt plaats in het werkgeheugen van het apparaat van de gebruiker.
 
 ## 🚀 Belangrijkste Functies
 
-- **Privacy by Design:** Geen API's, geen databases, geen externe backend elementen. Alles draait offline in je eigen client.
-- **Instructievideo's:** Twee ingebedde YouTube tutorials (basis en geavanceerd gebruik) direct inzichtelijk in het uitleg-paneel.
-- **Transparantie:** 100% Open Source code vrij inzichtelijk op GitHub, als tastbaar bewijs van onze "Zero-AI" aanpak.
-- **Diepgaande Patroonherkenning:** Herkent geavanceerde datatypes via complexe reguliere expressies en gigantische ingebouwde referentielijsten (>2200 veelvoorkomende voornamen en >3300 wereldwijde/Nederlandse locaties).
-- **Consistente Pseudonimisering:** Genereert direct leesbare, context-bewuste vervangers (zoals `Jan de Vries` → `Sofie van Houten`) om de vloeiendheid in de tekst te behouden.
-- **Omkeerbaar (De-anonimiseren):** Exporteert na elke sessie een veilig `.anon` JSON-sleutelbestand. Deze fungeert als versleutelloze mapping om de originele tekst later simpel en exact te herstellen.
-- **Grootschalige Document Ondersteuning (100MB):** Directe en naadloze verwerking van gigantische `.docx`, `.xlsx`, en `.csv` bestanden tot wel 100MB per bestand, waarbij de volledige opmaak en styling (bold, tabellen, kleuren) exact intact blijft na de-anonimisering. Bevat slimme detectie om verouderde `.doc` bestanden te blokkeren met duidelijke conversie-instructies.
-- **Twee Anonimiseringsmodi:** Kies dynamisch tussen *Realistische Vertaalslag* (waarbij namen worden vervangen door passend klinkende, fictieve namen voor betere leesbaarheid) en *Placeholder Modus* (voor exacte machinale verwerking zoals `[PERSOON_1]`). Inclusief geïntegreerde tips voor naadloos AI-gebruik.
-- **Terugkerende Onderwerpen & Workflow Pariteit:** Ondersteuning voor het 'stacken' of uploaden van voorgaande `.anon` bestanden direct in zowel het *Bestanden* als het *Anonimiseren* tabblad. Ideaal voor periodieke besprekingen waarbij dezelfde personen elke iteratie exact hetzelfde unieke pseudoniem moeten houden.
-- **Geavanceerde Deduplicatie (1x Uniek):** Nieuwe weergavemodus die de ruwe tekst filtert en elk woord slechts één keer toont. Ideaal voor het razendsnel scannen op vergeten PII zonder afgeleid te worden door massale herhalingen.
-- **Minimalistische Iconografie:** Introductie van strakke, monochrome SVG-iconen (zoals een dynamische muisaanwijzer) en consistente status-banners voor een rustiger, professioneel en afleidingsvrij design.
-- **State-of-the-Art UI & Pixel-Perfect Design:** Strak vormgegeven met *Glassmorphism*, in/uitklapbare tabbladen, geanimeerde drag-and-drop zones, en consistente hover- en focus states over alle interactieve elementen. Met extreme precisie uitgelijnde data-tabellen via vastgezette grid-kolommen, **gestandaardiseerde "Solid-Opaque" tooltips**, logisch verticaal opgebouwde de-anonimiserings stappen, en een adembenemend **Light / Dark Mode thema switch**.
-- **Real-time Analyse & Statistieken:** Direct inzicht in de impact van anonimisering via live frequentie-tellingen in de omzettingstabel. Bij document-uploads (Word/Excel/CSV) wordt elke gevonden term nu exact geteld over het hele document, wat helpt bij het valideren van grootschalige transcripties.
+- **Privacy by Design:** Geen API's, geen databases, geen externe backend elementen, geen client-side analytics. Alles draait 100% offline in de browser — er wordt nooit data verstuurd.
+- **Instructievideo's:** Twee ingebedde YouTube tutorials (basis en geavanceerd gebruik) in het uitleg-paneel.
+- **Transparantie:** Volledig Open Source. De broncode is vrij inzichtelijk op GitHub.
+- **Patroonherkenning:** Herkent veelvoorkomende PII-categorieën via reguliere expressies en ingebouwde referentielijsten (>2200 voornamen en >3300 Nederlandse/wereldwijde locaties).
+- **Consistente Pseudonimisering:** Genereert leesbare, context-bewuste vervangers (bijv. `Jan de Vries` → `Sofie van Houten`) om de leesbaarheid van de tekst te behouden.
+- **Omkeerbaar (De-anonimiseren):** Exporteert na elke sessie een `.anon` JSON-sleutelbestand waarmee de originele tekst later exact hersteld kan worden.
+- **Document Ondersteuning:** Verwerking van `.docx`, `.xlsx` en `.csv` bestanden (tot 100 MB), waarbij opmaak en styling behouden blijven. Verouderde `.doc` bestanden worden geblokkeerd met conversie-instructies.
+- **Twee Modi:** Keuze tussen *Realistische Vertaalslag* (fictieve namen voor leesbaarheid) en *Placeholder Modus* (bijv. `[PERSOON_1]` voor machinale verwerking). Met tips voor AI-gebruik.
+- **Terugkerende Onderwerpen:** Ondersteuning voor het hergebruiken van eerdere `.anon` bestanden, zodat dezelfde personen bij elke sessie hetzelfde pseudoniem houden.
+- **Deduplicatie (1x Uniek):** Weergavemodus die elk woord slechts één keer toont, handig voor het scannen op gemiste PII in lange teksten.
+- **Woordgrens-herkenning:** Vervangingen vinden alleen plaats op hele woorden — "Sam" wordt niet vervangen als onderdeel van "samen" of "samenwerkingsruimte".
+- **UI:** Vormgegeven met glassmorphism, drag-and-drop zones, light/dark mode en responsive layout.
+- **Frequentie-tellingen:** Live overzicht van het aantal keer dat elke gevonden term voorkomt in de tekst of het document.
 
-## 🔎 Wat wordt er feilloos herkend?
+## 🔎 Wat wordt er herkend?
 
-De engine is ontworpen (bewust zónder ondoorzichtige AI te gebruiken) op het trefzeker en razendsnel detecteren van:
-1. **(Voor/Achter) Namen** (o.b.v. grote interne lexicons, hoofdlettergebruik en woord-uitsluiting)
-2. **Plaatsnamen en Landen** (Globale dekking via >195 staten en >3300 actuele Nederlandse gemeentes/dorpen)
-3. **E-mailadressen** (Inclusief hardnekkig geobfusceerde formaten zoals `(at)`, `[at]` en `apestaartje`)
-4. **URL's & Netwerkprotocollen** (`https`, `ftp`, `sftp`, `smb`, incl. paden en kale domeinen)
-5. **Telefoon- en Mobiele nummers** (Internationale prefixes en complexe notaties inclusief leestekening en spatiëring)
-6. **Datums** (US, ISO, NL, uitgeschreven maanden, afgekorte jaren `’26`, optioneel met tijdnotaties er aan vastgeplakt)
-7. **Postcodes** (NL formaten)
-8. **Fysieke Adressen** (Straatnamen gebaseerd op gigantische prefix/suffix lijsten incl huisnummers)
+De engine detecteert (zonder AI) de volgende categorieën:
+1. **(Voor/Achter) Namen** — op basis van interne woordenlijsten, hoofdlettergebruik en woord-uitsluiting
+2. **Plaatsnamen en Landen** — >195 landen en >3300 Nederlandse gemeentes/dorpen
+3. **E-mailadressen** — inclusief geobfusceerde notaties zoals `(at)`, `[at]`, `apestaartje`
+4. **URL's & Netwerkprotocollen** — `https`, `ftp`, `sftp`, `smb`, inclusief paden en kale domeinen
+5. **Telefoon- en Mobiele nummers** — internationale prefixes en diverse notaties
+6. **Datums** — US, ISO, NL, uitgeschreven maanden, afgekorte jaren (`'26`), optioneel met tijdnotaties
+7. **Postcodes** — NL formaten
+8. **Fysieke Adressen** — straatnamen op basis van prefix/suffix lijsten, inclusief huisnummers
 9. **IBAN / Rekeningnummers**
-10. **BSN-nummers** (Alle notaties, bijv. `1234 56 789` of `1234/56/789`)
+10. **BSN-nummers** — diverse notaties (bijv. `1234 56 789` of `1234/56/789`)
+
+Patroonherkenning is niet foutloos. Controleer het resultaat altijd handmatig.
 
 ## 🔐 Beveiliging, Architectuur & Prestaties
 
-Deze codebase is op het hoogste niveau verhard en geoptimaliseerd voor productie:
-- **Zero-Footprint:** Geen trackable analytics, geen cloud fingerprinting map-leaks (`build.sourcemap: false`), volledig AVG proof.
-- **Security Headers:** Strict geconfigureerd met Content Security Policies (CSP), gesloten `object-src`, frame-src support, en X-Frame-Options (DENY). Inclusief geavanceerde browser-isolatie via **Cross-Origin-Opener-Policy (COOP)** en **Cross-Origin-Resource-Policy (CORP)** headers. Bekroond met de hoogst mogelijke **A+ (125/100)** score op de Mozilla HTTP Observatory.
-- **Supply Chain Security:** Actieve monitoring op kwetsbaarheden in dependencies (Semgrep/NPM audits). Kritieke CVE's worden direct gepatcht via gerichte overrides (bijv. `uuid` hardening voor `exceljs` integratie).
-- **Extreme Prestaties:** Geoptimaliseerd voor een sub-seconde laadtijd gemeten via WebPageTest (LCP ~1.1s, CLS 0.0). Bereikt dankzij Vite Manual-Chunking, effectieve Brotli-compressie en CSS Skeleton Loading ter preventie van Flash-Of-Unstyled-Content (FOUC).
-- **Toegankelijkheid (WCAG 2.1 AA):** Volledig compliant en doorgelicht met `Axe` en `Catchpoint` scanners. Kleuren, contrast ratio's (minimaal 4.5:1) en semantiek zijn strikt geoptimaliseerd, resulterend in **0 violations** in zowel Light als Dark mode. Een inclusieve en premium ervaring is hiermee gegarandeerd.
-- **Juridisch Dekkend:** Volledig ingebouwde dynamische én indexeerbare statische *Disclaimer* en *Privacybeleid* pagina's. Door slimme server-rewrites navigeren geautomatiseerde privacy-scanners (via `/privacy` en `/terms`) foutloos naar de documentatie, resulterend in vlekkeloze compliance-rapporten.
-- **Wettelijke Kaders & Pseudonimisering:** De tool faciliteert naleving van richtlijnen van SIVON, NCSC en de Autoriteit Persoonsgegevens (AP) aangaande dataminimalisatie en "lokale verwerking vóór cloud-upload". Omdat de output middels het gegenereerde `.anon` sleutelbestand weer te ontsleutelen is, produceert dit platform strikt juridisch gezien *(omkeerbare) gepseudonimiseerde* data. Gebruikers dienen zelf op contextuele identificeerbaarheid te letten.
-- **Transparantie & Community Audits:** Omdat de tool ontworpen is voor privacygevoelige teksten, staat deze Open Source codebase áltijd open voor onafhankelijke code-audits. Beveiligingsonderzoekers, instituten (zoals NCSC of AP) en ontwikkelaars worden actief uitgenodigd de repository te toetsen op kwetsbaarheden en verbeteringen aan te dragen.
+- **Zero-Footprint:** Geen client-side analytics, geen tracking beacons, geen cookies. De CSP `connect-src` staat uitsluitend `'self'` toe — de browser maakt vanuit deze applicatie geen externe verbindingen. Sourcemaps zijn uitgeschakeld (`build.sourcemap: false`).
+- **Security Headers:** Content Security Policy (CSP), `object-src: 'none'`, X-Frame-Options (DENY), Cross-Origin-Opener-Policy (COOP) en Cross-Origin-Resource-Policy (CORP). Getest met een **A+ score** op de Mozilla HTTP Observatory.
+- **Supply Chain Security:** Dependencies worden gemonitord op kwetsbaarheden. Bekende CVE's worden gepatcht via gerichte overrides.
+- **Prestaties:** Geoptimaliseerd voor snelle laadtijden (LCP ~1.1s, CLS 0.0) via code-splitting, Brotli-compressie en skeleton loading.
+- **Toegankelijkheid (WCAG 2.1 AA):** Doorgelicht met Axe en Catchpoint. Contrastverhoudingen (minimaal 4.5:1) en semantiek zijn geoptimaliseerd voor zowel light als dark mode.
+- **Juridisch:** Ingebouwde *Disclaimer* en *Privacybeleid* pagina's (dynamisch en als statische HTML). Omdat de output via het `.anon` sleutelbestand omkeerbaar is, betreft het strikt genomen *pseudonimisering*, geen volledige anonimisering. Gebruikers dienen zelf op contextuele herleidbaarheid te letten.
+- **Open voor Audits:** De broncode staat open voor onafhankelijke code-audits. Beveiligingsonderzoekers en ontwikkelaars worden uitgenodigd verbeteringen aan te dragen.
 
 ## 🛠️ Installatie & Scripts
 
-Zorg dat [Node.js](https://nodejs.org/) op je development machine beschikbaar is.
+Vereist: [Node.js](https://nodejs.org/)
 
-1. **Clone de repository en installeer pakketten:**
+1. **Installeer pakketten:**
    ```bash
    npm install
    ```
 
-2. **Start de lokale (Development) server:**
+2. **Start de development server:**
    ```bash
    npm run dev
    ```
-   De applicatie en watch-server starten op `http://localhost:5173/`.
+   De applicatie draait op `http://localhost:5173/`.
 
-3. **Bouw voor Productie / Deployment:**
+3. **Bouw voor productie:**
    ```bash
    npm run build
    ```
-   De geoptimaliseerde statische applicatie (`dist/` map) is hiermee geprepareerd voor zero-config CI/CD verwerking bij platformen als **Vercel** of **Netlify**.
+   De statische output (`dist/`) kan gedeployd worden op platformen als Vercel of Netlify.
 
 ---
-*Gebouwd met een compromisloze visie op dataveiligheid en snelle betrouwbaarheid.* 
-*Ontwerpers-Ode: The background canvas engine and sleek frontend concepts are inspired by the digital aesthetics of AntiGravity.*
+*Ontworpen met een focus op dataveiligheid en lokale verwerking.*

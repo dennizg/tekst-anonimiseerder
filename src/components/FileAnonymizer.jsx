@@ -4,7 +4,7 @@ import TextHighlighter from './TextHighlighter';
 import DropZone from './DropZone';
 import { detectPII, detectCategory } from '../utils/detector';
 import { generateReplacement, generatePlaceholder, resetGenerator, registerUsedReplacements } from '../utils/generator';
-import { exportMappingFile, importMappingFile } from '../utils/fileHandler';
+import { exportMappingFile, importMappingFile, buildWordBoundaryRegex } from '../utils/fileHandler';
 import { extractTextFromFile, writeBackToFile } from '../utils/documentHandler';
 
 /**
@@ -157,11 +157,22 @@ export default function FileAnonymizer({ onShowNotification, replacementMode, to
       onShowNotification?.(`"${text}" staat al in de tabel.`, 'info');
       return;
     }
+
+    // Check of de tekst als zelfstandig woord voorkomt in de geëxtraheerde tekst
+    if (extractedText) {
+      const regex = buildWordBoundaryRegex(text);
+      const matches = extractedText.match(regex);
+      if (!matches || matches.length === 0) {
+        onShowNotification?.(`"${text}" komt niet als zelfstandig woord voor in het bestand.`, 'info');
+        return;
+      }
+    }
+
     const { category, label } = detectCategory(text);
     const replacement = generate(text, category);
     setMappings(prev => [...prev, { original: text, category, label, replacement }]);
     onShowNotification?.(`"${text}" toegevoegd als ${label}`, 'success');
-  }, [mappings, generate, onShowNotification]);
+  }, [mappings, generate, onShowNotification, extractedText]);
 
   // ── Vorig omzettingsbestand laden ─────────────────────────────────────────────
 
@@ -214,19 +225,12 @@ export default function FileAnonymizer({ onShowNotification, replacementMode, to
   const realCounts = useMemo(() => {
     if (!extractedText || mappings.length === 0) return {};
     const c = {};
-    const textLower = extractedText.toLowerCase();
     
     for (const m of mappings) {
       if (!m.original) continue;
-      const termLower = m.original.toLowerCase();
-      let count = 0;
-      let pos = textLower.indexOf(termLower);
-      
-      while (pos !== -1) {
-        count++;
-        pos = textLower.indexOf(termLower, pos + termLower.length);
-      }
-      c[m.original] = count;
+      const regex = buildWordBoundaryRegex(m.original);
+      const matches = extractedText.match(regex);
+      c[m.original] = matches ? matches.length : 0;
     }
     return c;
   }, [extractedText, mappings]);
