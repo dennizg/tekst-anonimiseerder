@@ -25,6 +25,7 @@ export default function App() {
   const [hasAnonymized, setHasAnonymized] = useState(false);
   const [notification, setNotification] = useState(null);
   const [legalModalType, setLegalModalType] = useState(null);
+  const [showClipboardModal, setShowClipboardModal] = useState(false);
   
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem('anon-theme') || 'light';
@@ -246,13 +247,14 @@ export default function App() {
     const success = await copyToClipboard(anonymizedText);
     if (success) {
       setCopied(true);
+      setShowClipboardModal(true);
       setTimeout(() => setCopied(false), 4000);
+    } else {
+      showNotification(
+        'Omzettingsbestand gedownload, maar klembord kopiëren is mislukt.',
+        'error'
+      );
     }
-
-    showNotification(
-      'Tekst gekopieerd naar klembord en omzettingsbestand gedownload!',
-      'success'
-    );
   }, [originalText, mappings]);
 
   /**
@@ -578,6 +580,36 @@ export default function App() {
         <Suspense fallback={null}>
           <LegalModal type={legalModalType} onClose={() => setLegalModalType(null)} />
         </Suspense>
+      )}
+
+      {/* Clipboard Success Modal */}
+      {showClipboardModal && (
+        <div className="clipboard-modal-overlay" onClick={() => setShowClipboardModal(false)}>
+          <div className="clipboard-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="clipboard-modal__icon-ring">
+              <svg className="clipboard-modal__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+                <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
+                <path d="M9 14l2 2 4-4" />
+              </svg>
+            </div>
+            <h3 className="clipboard-modal__title">Tekst gekopieerd!</h3>
+            <p className="clipboard-modal__text">
+              De geanonimiseerde tekst staat nu in je <strong>klembord</strong> (geheugen).
+              Je kunt deze direct plakken in elke applicatie — zoals Word, Outlook, Teams of een AI-tool.
+            </p>
+            <div className="clipboard-modal__hint">
+              <span className="clipboard-modal__hint-icon">💡</span>
+              <span>Gebruik <kbd>Ctrl</kbd> + <kbd>V</kbd> om te plakken</span>
+            </div>
+            <p className="clipboard-modal__subtext">
+              Het omzettingsbestand (.anon) is apart gedownload — bewaar dit goed om later te kunnen de-anonimiseren.
+            </p>
+            <button className="btn btn--primary clipboard-modal__btn" onClick={() => setShowClipboardModal(false)}>
+              👍 Begrepen
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );
